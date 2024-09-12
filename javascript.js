@@ -3,6 +3,8 @@ const container = document.querySelector(".container");
 let isMouseDown = false;
 let currentTool = "draw";
 let brushColour = "black";
+let currentSize = 16;
+let nextRainbowColour = 0;
 
 // Checks if the user is holding the mouse down
 document.body.onmousedown = (e) => {
@@ -14,6 +16,12 @@ document.body.onmousedown = (e) => {
 document.addEventListener('mouseup', function() {
     isMouseDown = false;  
 });
+
+function clearGrid(){
+    while (container.hasChildNodes()){
+        container.removeChild(container.lastChild);
+    }
+}
 
 function createGrid(size){
 
@@ -60,6 +68,7 @@ function createGrid(size){
 createGrid(32);
 
 function generateRandomColour(){
+
     let value1 = Math.random()*255;
     let value2 = Math.random()*255;
     let value3 = Math.random()*255;
@@ -67,6 +76,35 @@ function generateRandomColour(){
     let randomColour = ("rgb(" + value1 + "," + value2 + "," + value3 + ")")
     
     return randomColour;
+}
+
+function generateRainbowColour(){
+
+    if (nextRainbowColour == 13){
+        nextRainbowColour = 0;
+    }
+    
+    const rainbowColours = [
+        "#FF0000", // Red
+        "#FF3300", // Red-Orange
+        "#FF6600", // Orange
+        "#FF9900", // Orange-Yellow
+        "#FFCC00", // Yellow
+        "#FFFF00", // Yellow
+        "#CCFF00", // Yellow-Green
+        "#00FF00", // Green
+        "#00CCFF", // Green-Blue
+        "#0000FF", // Blue
+        "#3300FF", // Blue-Indigo
+        "#6600CC", // Indigo
+        "#9900CC", // Indigo-Violet
+        "#CC00CC"  // Violet
+      ];
+
+    let rainbowColour = rainbowColours[nextRainbowColour];
+    nextRainbowColour = nextRainbowColour + 1;
+
+    return rainbowColour;
 }
 
 // Adds event listeners to the boxes
@@ -90,7 +128,14 @@ function initalizeBox(){
                 else if (currentTool == "erase"){
                     box.style.backgroundColor = "white";
                 }
+
+                else if (currentTool == "random"){
+                    box.style.backgroundColor = generateRandomColour();
+                }
                 
+                else if (currentTool == "rainbow"){
+                    box.style.backgroundColor = generateRainbowColour();
+                }
             }
 
         });
@@ -115,13 +160,13 @@ sizeBtns.forEach((sizeBtn) => {
 
     sizeBtn.addEventListener("click", () => {
 
-        while (container.hasChildNodes()){
-            container.removeChild(container.lastChild);
-        }
+        clearGrid();
 
         let size = sizeBtn.textContent.slice(0,2);
 
         createGrid(size);
+
+        currentSize = size;
 
     });
 });
@@ -186,5 +231,15 @@ toolBtns.forEach((toolBtn) => {
         currentTool = toolBtn.getAttribute("id");
         console.log(currentTool);
     });
+
+    if (toolBtn.getAttribute("id") === "clear"){
+        
+        toolBtn.addEventListener("click", () => {
+            
+            clearGrid();
+
+            createGrid(currentSize);
+        });
+    }
 })
 

@@ -5,10 +5,11 @@ ToolKit{
     Rainbow
     Rainbow Fill
     Clear
+    Change brush size
 }
 
 General{
     Convert drawing to png (to download)
     Gallery of saved images
-    Folder for images
+    Folder for images   
 }
