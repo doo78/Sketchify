@@ -1,11 +1,9 @@
 ToolKit{
-    Draw
-    Erase
+    
     Bucket/Fill
-    Rainbow
     Rainbow Fill
-    Clear
     Change brush size
+    Back button
 }
 
 General{

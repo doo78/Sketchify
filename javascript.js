@@ -107,6 +107,97 @@ function generateRainbowColour(){
     return rainbowColour;
 }
 
+function fill(box){
+
+    /*
+    const containerArray = Array.from(container.children);
+
+    let surroundingBoxes;
+
+
+    console.log(containerArray[0].length);
+
+    for (let row = 0; row < containerArray.length; row++){
+        console.log("row", row);
+        for (let col = 0; col < containerArray[row].length; col++){
+            console.log("col", col);
+            if (box === containerArray[row][col]){
+                surroundingBoxes = [containerArray[row-1][col-1], containerArray[row-1][col], 
+                containerArray[row-1][col+1], containerArray[row][col-1], containerArray[row][col+1], 
+                containerArray[row+1][col-1], containerArray[row+1][col], containerArray[row+1][col+1]];
+                break;
+            }
+        }
+    }
+
+    surroundingBoxes.forEach((box) => {
+
+        if (box != undefined){
+
+            if (box.style.backgroundColor != brushColour){
+
+                box.style.backgroundColor = brushColour;
+            }
+        }
+    });
+    */
+    const containerArray = Array.from(container.children);
+    let boxRow, boxIndex;
+    for (let i = 0; i < containerArray.length; i++) {
+      const row = containerArray[i];
+      if (row.contains(box)) {
+        boxRow = row;
+        boxIndex = Array.from(row.children).indexOf(box);
+        break;
+      }
+    }
+    
+    const surroundingBoxes = [];
+    if (boxRow.previousElementSibling) {
+      // Get boxes from previous row
+      const prevRow = boxRow.previousElementSibling;
+      surroundingBoxes.push(prevRow.children[boxIndex - 1]);
+      surroundingBoxes.push(prevRow.children[boxIndex]);
+      surroundingBoxes.push(prevRow.children[boxIndex + 1]);
+    }
+    
+    // Get boxes from current row
+    surroundingBoxes.push(boxRow.children[boxIndex - 1]);
+    surroundingBoxes.push(boxRow.children[boxIndex + 1]);
+    
+    if (boxRow.nextElementSibling) {
+      // Get boxes from next row
+      const nextRow = boxRow.nextElementSibling;
+      surroundingBoxes.push(nextRow.children[boxIndex - 1]);
+      surroundingBoxes.push(nextRow.children[boxIndex]);
+      surroundingBoxes.push(nextRow.children[boxIndex + 1]);
+    }
+
+    const validBoxes = [1, 3, 4, 6];
+
+    for (let i = 0; i < surroundingBoxes.length; i++) {
+
+
+        if (!validBoxes.includes(i)){
+            continue;
+        }
+
+        let boxToFill = surroundingBoxes[i];
+
+        if (boxToFill != undefined){
+
+            if (boxToFill.style.backgroundColor != brushColour){
+
+                boxToFill.style.backgroundColor = brushColour;
+
+                fill(boxToFill);
+            }
+        }
+        
+    };
+
+}
+
 // Adds event listeners to the boxes
 function initalizeBox(){
 
@@ -136,6 +227,7 @@ function initalizeBox(){
                 else if (currentTool == "rainbow"){
                     box.style.backgroundColor = generateRainbowColour();
                 }
+
             }
 
         });
@@ -148,6 +240,10 @@ function initalizeBox(){
         // Changes the colour of the box when it is clicked instead of dragged past
         box.addEventListener("click", () => {
             box.style.backgroundColor = brushColour;
+
+            if (currentTool == "fill"){
+                fill(box);
+            }
         });
     });
 }
@@ -241,5 +337,6 @@ toolBtns.forEach((toolBtn) => {
             createGrid(currentSize);
         });
     }
+
 })
 
