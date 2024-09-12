@@ -1,29 +1,39 @@
 body{
-    background-color: grey;
+    background-color: #A9A9A9;
+    display: flex;
+    margin: 0;
+    padding: 0;
 }
 
+/*Right side*/
+.right-side{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*Title*/
+.title{
+    text-align: center;
+    font-size: 50px;
+}
+
+/*Inside the canvas*/
 .container{
     display: flex;
     flex-direction: column;
 
     width: 704px;
     height: 704px;
-    border: 5px solid black;
+    border: 2px solid black;
     background-color: white;
     
     margin-left: auto;
     margin-right: auto;     
     
-}
-
-#size{
-    
-    margin-left: 540px;
-    margin-right: auto;
-    margin-bottom: 50px;
-    margin-top: 50px;
-    
-       
 }
 
 #boxRow{
@@ -36,4 +46,23 @@ body{
     height: 22px;
     width: 22px;
     
+}
+
+/*Side Bar*/
+
+.sideBar{
+    border: 1px solid black;
+    height: 100vh;
+    width: 350px;
+    background-color: #A9A9A9;
+}
+
+#size{
+    
+    margin-left: 540px;
+    margin-right: auto;
+    margin-bottom: 50px;
+    margin-top: 50px;
+    
+       
 }
