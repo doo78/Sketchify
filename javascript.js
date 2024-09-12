@@ -1,6 +1,8 @@
 
 const container = document.querySelector(".container");
 let isMouseDown = false;
+let currentTool = "draw";
+let brushColour = "black";
 
 // Checks if the user is holding the mouse down
 document.body.onmousedown = (e) => {
@@ -80,7 +82,15 @@ function initalizeBox(){
 
             // Changes the colour if the user is holding the mouse down
             if (isMouseDown){
-                box.style.backgroundColor = "black";
+
+                if (currentTool === "draw"){
+                    box.style.backgroundColor = brushColour;    
+                }
+
+                else if (currentTool == "erase"){
+                    box.style.backgroundColor = "white";
+                }
+                
             }
 
         });
@@ -92,7 +102,7 @@ function initalizeBox(){
 
         // Changes the colour of the box when it is clicked instead of dragged past
         box.addEventListener("click", () => {
-            box.style.backgroundColor = "black";
+            box.style.backgroundColor = brushColour;
         });
     });
 }
@@ -112,6 +122,69 @@ sizeBtns.forEach((sizeBtn) => {
         let size = sizeBtn.textContent.slice(0,2);
 
         createGrid(size);
-        
+
     });
 });
+
+// Colour palette buttons
+
+const colourBtns = document.querySelectorAll(".colour");
+
+const colourBtnsArray = Array.from(colourBtns);
+
+const colours = [
+    "#FF0000", // red
+    "#00FF00", // green
+    "#0000FF", // blue
+    "#FFFF00", // yellow
+    "#FF00FF", // magenta
+    "#00FFFF", // cyan
+    "#FFA500", // orange
+    "#800080", // purple
+    "#FFFFFF", // white
+    "#000000", // black
+    "#808080", // gray
+    "#FF4500", // orange red
+    "#FFD700", // gold
+    "#008080", // teal
+    "#ADD8E6", // light blue
+    "#8B008B"  // dark purple
+  ];
+
+colourBtns.forEach((colourBtn) => {
+
+    console.log("hi");
+    colourBtn.style.backgroundColor = colours[colourBtnsArray.indexOf(colourBtn)];
+
+    colourBtn.addEventListener("click", () => {
+
+        brushColour = colourBtn.style.backgroundColor;
+        /*
+        brushColour = getComputedStyle(colourBtn).backgroundColor;
+        */
+    });
+});
+
+// Hex Picker button
+
+const confirmBtn = document.querySelector("#confirm-btn");
+const hexPicker = document.querySelector("#hex-colour-picker");
+
+confirmBtn.addEventListener("click", () => {
+
+    brushColour = hexPicker.value;
+});
+
+// Toolbar
+
+const toolBtns = document.querySelectorAll(".tool-btn");
+
+toolBtns.forEach((toolBtn) => {
+
+    toolBtn.addEventListener("click", () => {
+
+        currentTool = toolBtn.getAttribute("id");
+        console.log(currentTool);
+    });
+})
+

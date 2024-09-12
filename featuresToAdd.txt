@@ -1,0 +1,14 @@
+ToolKit{
+    Draw
+    Erase
+    Bucket/Fill
+    Rainbow
+    Rainbow Fill
+    Clear
+}
+
+General{
+    Convert drawing to png (to download)
+    Gallery of saved images
+    Folder for images
+}
