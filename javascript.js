@@ -8,6 +8,37 @@ let nextRainbowColour = 0;
 let isGridLines = false;
 let brushSize = "thin";
 
+
+const downloadBtn = document.getElementById('download-btn');
+
+downloadBtn.addEventListener('click', () => {
+    /*
+    const canvas = document.createElement('canvas');
+    canvas.width = container.offsetWidth;
+    canvas.height = container.offsetHeight;
+  
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(container, 0, 0, canvas.width, canvas.height);
+  
+    const pngUrl = canvas.toDataURL('image/png');
+    const downloadLink = document.createElement('a');
+    downloadLink.href = pngUrl;
+    downloadLink.download = 'image.png';
+  
+    downloadLink.click();
+    */
+
+    // Creates a download link using the html2canvas library
+    html2canvas(container).then(canvas => {
+        const pngUrl = canvas.toDataURL('image/png');
+        const downloadLink = document.createElement('a');
+        downloadLink.href = pngUrl;
+        downloadLink.download = 'image.png';
+    
+        downloadLink.click();
+      });
+});
+
 // Checks if the user is holding the mouse down
 document.body.onmousedown = (e) => {
     isMouseDown = true;
@@ -522,6 +553,29 @@ miscBtns.forEach((miscBtn) => {
         miscBtn.addEventListener("click", () => {
             brushSize =  miscBtn.getAttribute("id");
             console.log(brushSize);
+        });
+    }
+
+    if(miscBtn.getAttribute("id") === "download-btn"){
+        console.log("1")
+        miscBtn.addEventListener("click", () => {
+
+            console.log("2")
+            const canvas = document.getElementById('image-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Draw the image on the canvas
+            ctx.drawImage(container, 0, 0);
+            
+            // Generate a PNG image URL
+            const pngUrl = canvas.toDataURL('image/png');
+            
+            // Create a download link
+            const downloadLink = document.createElement('a');
+            downloadLink.href = pngUrl;
+            downloadLink.download = 'image.png';
+
+            download.click();
         });
     }
 

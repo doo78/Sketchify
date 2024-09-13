@@ -1,13 +1,11 @@
 ToolKit{
     
-    Bucket/Fill
-    Rainbow Fill
-    Change brush size
-    Back button
+    Back button (likely not feasible)
 }
 
 General{
     Convert drawing to png (to download)
     Gallery of saved images
-    Folder for images   
+    Folder for images
+    BGM?  
 }
