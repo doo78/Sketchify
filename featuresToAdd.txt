@@ -4,8 +4,15 @@ ToolKit{
 }
 
 General{
-    Convert drawing to png (to download)
     Gallery of saved images
     Folder for images
     BGM?  
+    Landscape?
+    Portrait?
+    Name the gallery pieces
+}
+
+To do{
+    Add comments
+    Move download button and save button to the miscBarBtn section
 }

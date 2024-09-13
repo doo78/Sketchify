@@ -39,6 +39,25 @@ downloadBtn.addEventListener('click', () => {
       });
 });
 
+const saveBtn = document.querySelector('#save-btn');
+
+
+saveBtn.addEventListener('click', () => {
+
+    html2canvas(container).then(canvas => {
+      const image = canvas.toDataURL('image/png');
+  
+      var imageElement = document.createElement('img');
+      imageElement.classList.add('saved-image');
+      imageElement.src = image;
+  
+      document.getElementById('gallery').appendChild(imageElement);
+    });
+
+    
+  });
+
+
 // Checks if the user is holding the mouse down
 document.body.onmousedown = (e) => {
     isMouseDown = true;
