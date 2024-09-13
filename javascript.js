@@ -107,7 +107,9 @@ function generateRainbowColour(){
     return rainbowColour;
 }
 
-function fill(box){
+// To do: make the rainbow fill
+// To do: stop algorithm if box clicked is already filled
+function fill(box, startingColour){
 
     /*
     const containerArray = Array.from(container.children);
@@ -184,6 +186,7 @@ function fill(box){
 
         let boxToFill = surroundingBoxes[i];
 
+        /*
         if (boxToFill != undefined){
 
             if (boxToFill.style.backgroundColor != brushColour){
@@ -191,6 +194,16 @@ function fill(box){
                 boxToFill.style.backgroundColor = brushColour;
 
                 fill(boxToFill);
+            }
+        }
+            */
+        if (boxToFill != undefined){
+
+            if (boxToFill.style.backgroundColor == startingColour){
+
+                boxToFill.style.backgroundColor = brushColour;
+
+                fill(boxToFill, startingColour);
             }
         }
         
@@ -239,11 +252,13 @@ function initalizeBox(){
 
         // Changes the colour of the box when it is clicked instead of dragged past
         box.addEventListener("click", () => {
-            box.style.backgroundColor = brushColour;
 
             if (currentTool == "fill"){
-                fill(box);
+                console.log(box.style.backgroundColor);
+                fill(box, box.style.backgroundColor);
             }
+
+            box.style.backgroundColor = brushColour;
         });
     });
 }
