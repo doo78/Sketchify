@@ -6,6 +6,7 @@ let brushColour = "black";
 let currentSize = 16;
 let nextRainbowColour = 0;
 let isGridLines = false;
+let brushSize = "thin";
 
 // Checks if the user is holding the mouse down
 document.body.onmousedown = (e) => {
@@ -108,6 +109,42 @@ function generateRainbowColour(){
     return rainbowColour;
 }
 
+function getSurroundingBoxes(box){
+    const containerArray = Array.from(container.children);
+    let boxRow, boxIndex;
+    for (let i = 0; i < containerArray.length; i++) {
+      const row = containerArray[i];
+      if (row.contains(box)) {
+        boxRow = row;
+        boxIndex = Array.from(row.children).indexOf(box);
+        break;
+      }
+    }
+    
+    const surroundingBoxes = [];
+    if (boxRow.previousElementSibling) {
+      // Get boxes from previous row
+      const prevRow = boxRow.previousElementSibling;
+      surroundingBoxes.push(prevRow.children[boxIndex - 1]);
+      surroundingBoxes.push(prevRow.children[boxIndex]);
+      surroundingBoxes.push(prevRow.children[boxIndex + 1]);
+    }
+    
+    // Get boxes from current row
+    surroundingBoxes.push(boxRow.children[boxIndex - 1]);
+    surroundingBoxes.push(boxRow.children[boxIndex + 1]);
+    
+    if (boxRow.nextElementSibling) {
+      // Get boxes from next row
+      const nextRow = boxRow.nextElementSibling;
+      surroundingBoxes.push(nextRow.children[boxIndex - 1]);
+      surroundingBoxes.push(nextRow.children[boxIndex]);
+      surroundingBoxes.push(nextRow.children[boxIndex + 1]);
+    }
+
+    return surroundingBoxes;
+}
+
 // To do: make the rainbow fill
 // To do: stop algorithm if box clicked is already filled
 function fill(box, startingColour, isRainbow){
@@ -144,6 +181,8 @@ function fill(box, startingColour, isRainbow){
         }
     });
     */
+
+    /*
     const containerArray = Array.from(container.children);
     let boxRow, boxIndex;
     for (let i = 0; i < containerArray.length; i++) {
@@ -175,6 +214,11 @@ function fill(box, startingColour, isRainbow){
       surroundingBoxes.push(nextRow.children[boxIndex]);
       surroundingBoxes.push(nextRow.children[boxIndex + 1]);
     }
+
+    */
+
+
+    const surroundingBoxes = getSurroundingBoxes(box);
 
     const validBoxes = [1, 3, 4, 6];
 
@@ -234,22 +278,55 @@ function initalizeBox(){
             // Changes the colour if the user is holding the mouse down
             if (isMouseDown){
 
-                if (currentTool === "draw"){
-                    box.style.backgroundColor = brushColour;    
+                if (brushSize === "thin"){
+                    if (currentTool === "draw"){
+                        box.style.backgroundColor = brushColour;    
+                    }
+
+                    else if (currentTool == "erase"){
+                        box.style.backgroundColor = "white";
+                    }
+
+                    else if (currentTool == "random"){
+                        box.style.backgroundColor = generateRandomColour();
+                    }
+                    
+                    else if (currentTool == "rainbow"){
+                        box.style.backgroundColor = generateRainbowColour();
+                    }
                 }
 
-                else if (currentTool == "erase"){
-                    box.style.backgroundColor = "white";
-                }
+                else{
+                    let surroundingBoxes = getSurroundingBoxes(box);
+                    let colour;
 
-                else if (currentTool == "random"){
-                    box.style.backgroundColor = generateRandomColour();
-                }
-                
-                else if (currentTool == "rainbow"){
-                    box.style.backgroundColor = generateRainbowColour();
-                }
+                    if (currentTool === "draw"){
+                        colour = brushColour;    
+                    }
 
+                    else if (currentTool == "erase"){
+                        colour = "white";
+                    }
+
+                    else if (currentTool == "random"){
+                        colour = generateRandomColour();
+                    }
+                    
+                    else if (currentTool == "rainbow"){
+                        colour = generateRainbowColour();
+                    }
+
+                    box.style.backgroundColor = colour;
+
+                    surroundingBoxes.forEach((box) => {
+
+                        if (box != undefined){
+
+                            box.style.backgroundColor = colour;
+                        }
+                    })
+                    
+                }
             }
 
         });
@@ -436,6 +513,15 @@ miscBtns.forEach((miscBtn) => {
             else{
                 isGridLines = true;
             }
+        });
+    }
+
+    if (miscBtn.classList.contains("brush-size")){
+        
+        console.log("Byee")
+        miscBtn.addEventListener("click", () => {
+            brushSize =  miscBtn.getAttribute("id");
+            console.log(brushSize);
         });
     }
 
