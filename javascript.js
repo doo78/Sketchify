@@ -5,6 +5,7 @@ let currentTool = "draw";
 let brushColour = "black";
 let currentSize = 16;
 let nextRainbowColour = 0;
+let isGridLines = false;
 
 // Checks if the user is holding the mouse down
 document.body.onmousedown = (e) => {
@@ -225,7 +226,10 @@ function initalizeBox(){
         box.addEventListener("mouseenter", () => {
 
             // Adds a border to the box the cursor hovers over
-            box.style.border = "0.5px solid black";
+           
+            box.style.border = "0.5px solid black";    
+            
+            
 
             // Changes the colour if the user is holding the mouse down
             if (isMouseDown){
@@ -252,7 +256,12 @@ function initalizeBox(){
 
         // Resets the border when the mouse leaves
         box.addEventListener("mouseleave", () => {
-            box.style.border = "none";
+            if (!isGridLines){
+                box.style.border = "none";
+            }
+            else{
+                box.style.border = "0.5px solid gray";
+            }
         });
 
         // Changes the colour of the box when it is clicked instead of dragged past
@@ -291,6 +300,8 @@ sizeBtns.forEach((sizeBtn) => {
         createGrid(size);
 
         currentSize = size;
+
+        isGridLines = false;
 
     });
 });
@@ -363,6 +374,68 @@ toolBtns.forEach((toolBtn) => {
             clearGrid();
 
             createGrid(currentSize);
+        });
+    }
+
+    if (toolBtn.getAttribute("id") === "grid-lines"){
+        
+        toolBtn.addEventListener("click", () => {
+            
+            let box = document.querySelectorAll(".box");
+            box.forEach((box) => {
+
+
+                if (!isGridLines){
+                    box.style.border = "0.5px solid gray";
+                }
+                else{
+                    box.style.border = "none";
+                }
+                
+                
+            })
+
+            if (isGridLines){
+                isGridLines = false;
+            }
+
+            else{
+                isGridLines = true;
+            }
+        });
+    }
+
+})
+
+const miscBtns = document.querySelectorAll(".misc-btn");
+
+miscBtns.forEach((miscBtn) => {
+
+    if (miscBtn.getAttribute("id") === "grid-lines"){
+        
+        miscBtn.addEventListener("click", () => {
+            
+            let box = document.querySelectorAll(".box");
+            box.forEach((box) => {
+
+
+                if (!isGridLines){
+                    box.style.border = "0.5px solid gray";
+                }
+                else{
+                    box.style.border = "none";
+                }
+                
+                
+            })
+
+            if (isGridLines){
+                isGridLines = false;
+            }
+
+            else{
+                isGridLines = true;
+            }
         });
     }
 
