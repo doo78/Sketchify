@@ -109,7 +109,7 @@ function generateRainbowColour(){
 
 // To do: make the rainbow fill
 // To do: stop algorithm if box clicked is already filled
-function fill(box, startingColour){
+function fill(box, startingColour, isRainbow){
 
     /*
     const containerArray = Array.from(container.children);
@@ -201,9 +201,14 @@ function fill(box, startingColour){
 
             if (boxToFill.style.backgroundColor == startingColour){
 
-                boxToFill.style.backgroundColor = brushColour;
+                if (isRainbow){
+                    boxToFill.style.backgroundColor = generateRainbowColour();
+                }
+                else{
+                    boxToFill.style.backgroundColor = brushColour;
+                }
 
-                fill(boxToFill, startingColour);
+                fill(boxToFill, startingColour, isRainbow);
             }
         }
         
@@ -254,11 +259,19 @@ function initalizeBox(){
         box.addEventListener("click", () => {
 
             if (currentTool == "fill"){
-                console.log(box.style.backgroundColor);
-                fill(box, box.style.backgroundColor);
+                fill(box, box.style.backgroundColor, false);
+                box.style.backgroundColor = brushColour;
             }
 
-            box.style.backgroundColor = brushColour;
+            else if (currentTool == "rainbow-fill"){
+                fill(box, box.style.backgroundColor, true);
+                box.style.backgroundColor = generateRainbowColour();
+            }
+
+            else if (currentTool = "draw"){
+                box.style.backgroundColor = brushColour;
+            }
+
         });
     });
 }
