@@ -15,4 +15,6 @@ General{
 To do{
     Add comments
     Move download button and save button to the miscBarBtn section
+    isMouseDown = false when the mouse exits the container
+    It switches to black draw when you click, even if you were on rainbow before
 }

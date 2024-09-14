@@ -15,8 +15,25 @@ body{
     margin-right: auto;
 }
 
+.title-section{
+    display: flex;
+
+}
+
 #title{
-    
+    height: 30px;
+    margin: 15px;
+}
+
+#title-confirm-btn{
+    height: 30px;  
+    margin: 15px;
+}
+
+#error-message{
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 /*Gallery*/
@@ -137,4 +154,6 @@ hr{
     width: 250px;
     margin: 40px;
 }
+
+
 

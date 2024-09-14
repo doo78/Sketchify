@@ -8,8 +8,64 @@ let nextRainbowColour = 0;
 let isGridLines = false;
 let brushSize = "thin";
 let galleryImages = [];
+let validTitle = false;
+
+const gallery = document.querySelector('#gallery');
+
+const checkTitles = document.querySelector('#check-titles')
+
+checkTitles.addEventListener('click', () => {
+
+    console.log(container.getAttribute('id'));
+});
+
+function removeImage(container, imageContainer){
 
 
+    let index = galleryImages.indexOf(container);
+
+    galleryImages.splice(index, 1);
+
+    let title = container.getAttribute('id');
+
+}
+function returnTitle(title){
+    
+    let answer;
+
+    galleryImages.forEach((image) => {
+        if (image.getAttribute('id') === title){
+            answer = image;
+        }
+    });
+
+    return answer;    
+}
+
+const titleConfirmBtn = document.querySelector('#title-confirm-btn');
+
+titleConfirmBtn.addEventListener('click', () => {
+
+    const errorMessage = document.querySelector('#error-message');
+    const title = document.querySelector('#title');
+    const titleText = title.value;
+
+    if (titleText ==="hi"){
+        errorMessage.textContent = "Title is already used"
+        titleConfirmBtn.style.backgroundColor = "red"
+    }
+
+    else if (titleText === ""){
+        errorMessage.textContent = "Title cannot be empty"
+        titleConfirmBtn.style.backgroundColor = "red"
+    }
+
+    else{
+        errorMessage.textContent = ""
+        titleConfirmBtn.style.backgroundColor = "green"
+        validTitle = true;
+    }
+});
 
 const downloadBtn = document.getElementById('download-btn');
 
@@ -46,52 +102,104 @@ const saveBtn = document.querySelector('#save-btn');
 
 saveBtn.addEventListener('click', () => {
 
-    let imageElement;
+    const saveMessage = document.querySelector('#save-message');
+    const title = document.querySelector('#title');
+    const titleText = title.value;
 
-    html2canvas(container).then(canvas => {
-      const image = canvas.toDataURL('image/png');
-        
-      imageContainer = document.createElement('div');
-      imageContainer.classList.add('image-container');
+    if (validTitle){
 
-      imageBtnContainer = document.createElement('div');
-      imageBtnContainer.classList.add('image-btn-container');
+        let imageElement;
 
-      imageElement = document.createElement('img');
-      imageElement.classList.add('saved-image');
-      imageElement.src = image;
+        html2canvas(container).then(canvas => {
+            const image = canvas.toDataURL('image/png');
+                
+            imageContainer = document.createElement('div');
+            imageContainer.classList.add('image-container');
 
-      let editBtn = document.createElement('button');
-      editBtn.classList.add("edit-btn");
-      editBtn.textContent = "Edit";
+            imageBtnContainer = document.createElement('div');
+            imageBtnContainer.classList.add('image-btn-container');
 
-      
-      editBtn.addEventListener('click', () => {
-        container = container;
-      });
+            imageElement = document.createElement('img');
+            imageElement.classList.add('saved-image');
+            imageElement.src = image;
 
-      let removeBtn = document.createElement('button');
-      removeBtn.classList.add("remove-btn");
-      removeBtn.textContent = "Remove";
+            let editBtn = document.createElement('button');
+            editBtn.classList.add("edit-btn");
+            editBtn.setAttribute("id", titleText);
+            editBtn.textContent = "Edit";
 
-      imageBtnContainer.appendChild(editBtn);
-      imageBtnContainer.appendChild(removeBtn);
+            let removeBtn = document.createElement('button');
+            removeBtn.classList.add("remove-btn");
+            removeBtn.textContent = "Remove";
 
-      imageContainer.appendChild(imageElement);
-      imageContainer.appendChild(imageBtnContainer);
+            imageBtnContainer.appendChild(editBtn);
+            imageBtnContainer.appendChild(removeBtn);
 
-      document.getElementById('gallery').appendChild(imageContainer);
+            imageContainer.appendChild(imageElement);
+            imageContainer.appendChild(imageBtnContainer);
 
-    });
+            imageContainer.classList.add('image-container');
 
-  
-    galleryImages.push(container);
+            imageContainer.setAttribute('id', titleText);
 
-    clearGrid();
+            document.getElementById('gallery').appendChild(imageContainer);
 
-    createGrid(currentSize);
+            let newContainer = container.cloneNode(true);
 
-    isGridLines = false;
+            newContainer.setAttribute('id', titleText);
+    
+            galleryImages.push(newContainer);
+
+            editBtn.addEventListener('click', () => {
+ 
+                container = returnTitle(titleText);
+                console.log(container);
+                console.log(container.getAttribute('id'));
+                
+            });
+
+            removeBtn.addEventListener('click', () => {
+ 
+                removeImage(container, imageContainer);
+                
+            });
+
+        });
+
+        /*
+        let newContainer = container.cloneNode(true);
+
+        newContainer.setAttribute('id', titleText);
+
+        galleryImages.push(newContainer);
+        */
+
+        clearGrid();
+
+        createGrid(currentSize);
+
+        isGridLines = false;
+
+        saveMessage.textContent = "Image saved"
+        saveMessage.style.color = "green"
+
+        /*
+        let editBtns = document.querySelectorAll('.edit-btn');
+        let editBtn = document.getElementById(titleText);
+
+        editBtn.addEventListener('click', () => {
+            container = returnTitle(titleText);
+            console.log(container.getAttribute('id'));
+        });
+        */
+
+    }
+
+    else{
+        saveMessage.textContent = "Enter valid title"
+        titleConfirmBtn.style.backgroundColor = "red"
+        saveMessage.style.color = "red"
+    }
 
   });
 
@@ -456,6 +564,10 @@ function initalizeBox(){
 
             else if (currentTool = "draw"){
                 box.style.backgroundColor = brushColour;
+            }
+
+            else if (currentTool = "rainbow"){
+                box.style.backgroundColor = generateRainbowColour();
             }
 
         });
