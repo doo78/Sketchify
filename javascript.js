@@ -1,5 +1,5 @@
 
-const container = document.querySelector(".container");
+let container = document.querySelector(".container");
 let isMouseDown = false;
 let currentTool = "draw";
 let brushColour = "black";
@@ -7,6 +7,8 @@ let currentSize = 16;
 let nextRainbowColour = 0;
 let isGridLines = false;
 let brushSize = "thin";
+let galleryImages = [];
+
 
 
 const downloadBtn = document.getElementById('download-btn');
@@ -44,21 +46,58 @@ const saveBtn = document.querySelector('#save-btn');
 
 saveBtn.addEventListener('click', () => {
 
+    let imageElement;
+
     html2canvas(container).then(canvas => {
       const image = canvas.toDataURL('image/png');
-  
-      var imageElement = document.createElement('img');
+        
+      imageContainer = document.createElement('div');
+      imageContainer.classList.add('image-container');
+
+      imageBtnContainer = document.createElement('div');
+      imageBtnContainer.classList.add('image-btn-container');
+
+      imageElement = document.createElement('img');
       imageElement.classList.add('saved-image');
       imageElement.src = image;
-  
-      document.getElementById('gallery').appendChild(imageElement);
+
+      let editBtn = document.createElement('button');
+      editBtn.classList.add("edit-btn");
+      editBtn.textContent = "Edit";
+
+      
+      editBtn.addEventListener('click', () => {
+        container = container;
+      });
+
+      let removeBtn = document.createElement('button');
+      removeBtn.classList.add("remove-btn");
+      removeBtn.textContent = "Remove";
+
+      imageBtnContainer.appendChild(editBtn);
+      imageBtnContainer.appendChild(removeBtn);
+
+      imageContainer.appendChild(imageElement);
+      imageContainer.appendChild(imageBtnContainer);
+
+      document.getElementById('gallery').appendChild(imageContainer);
+
     });
 
-    
+  
+    galleryImages.push(container);
+
+    clearGrid();
+
+    createGrid(currentSize);
+
+    isGridLines = false;
+
   });
 
 
 // Checks if the user is holding the mouse down
+/*
 document.body.onmousedown = (e) => {
     isMouseDown = true;
     e.preventDefault(); // Prevents an error when dragging an already black square
@@ -68,6 +107,17 @@ document.body.onmousedown = (e) => {
 document.addEventListener('mouseup', function() {
     isMouseDown = false;  
 });
+*/
+container.onmousedown = (e) => {
+    isMouseDown = true;
+    e.preventDefault(); // Prevents an error when dragging an already black square
+}
+
+// Checks if the user has released the mouse
+container.addEventListener('mouseup', function() {
+    isMouseDown = false;  
+});
+
 
 function clearGrid(){
     while (container.hasChildNodes()){
@@ -501,6 +551,8 @@ toolBtns.forEach((toolBtn) => {
             clearGrid();
 
             createGrid(currentSize);
+
+            isGridLines = false;
         });
     }
 

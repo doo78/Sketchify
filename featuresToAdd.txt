@@ -9,7 +9,7 @@ General{
     BGM?  
     Landscape?
     Portrait?
-    Name the gallery pieces
+    Name the gallery pieces (on top of the image)
 }
 
 To do{
