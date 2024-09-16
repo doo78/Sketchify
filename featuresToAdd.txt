@@ -5,8 +5,8 @@ ToolKit{
 
 General{
     Gallery of saved images
-    Folder for images
     BGM?  
+    Soundeffects
     Landscape?
     Portrait?
     Name the gallery pieces (on top of the image)

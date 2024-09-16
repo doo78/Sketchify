@@ -19,15 +19,27 @@ checkTitles.addEventListener('click', () => {
     console.log(container.getAttribute('id'));
 });
 
-function removeImage(container, imageContainer){
+function removeImage(newContainer){
 
 
-    let index = galleryImages.indexOf(container);
+    let index = galleryImages.indexOf(newContainer);
 
     galleryImages.splice(index, 1);
 
-    let title = container.getAttribute('id');
+    const imageContainers = document.querySelectorAll('.image-container');
 
+    
+
+    let imageContainer;
+
+    imageContainers.forEach((image) => {
+
+        if (image.getAttribute('id') === newContainer.getAttribute('id')){
+            imageContainer = image;
+    }
+    });
+
+    gallery.removeChild(imageContainer);
 }
 function returnTitle(title){
     
@@ -100,17 +112,10 @@ downloadBtn.addEventListener('click', () => {
 const saveBtn = document.querySelector('#save-btn');
 
 
-saveBtn.addEventListener('click', () => {
+function addGalleryImage(titleText, imageDiv){
+    let imageElement;
 
-    const saveMessage = document.querySelector('#save-message');
-    const title = document.querySelector('#title');
-    const titleText = title.value;
-
-    if (validTitle){
-
-        let imageElement;
-
-        html2canvas(container).then(canvas => {
+        html2canvas(imageDiv).then(canvas => {
             const image = canvas.toDataURL('image/png');
                 
             imageContainer = document.createElement('div');
@@ -123,10 +128,13 @@ saveBtn.addEventListener('click', () => {
             imageElement.classList.add('saved-image');
             imageElement.src = image;
 
+
+            
             let editBtn = document.createElement('button');
             editBtn.classList.add("edit-btn");
             editBtn.setAttribute("id", titleText);
             editBtn.textContent = "Edit";
+            
 
             let removeBtn = document.createElement('button');
             removeBtn.classList.add("remove-btn");
@@ -150,6 +158,8 @@ saveBtn.addEventListener('click', () => {
     
             galleryImages.push(newContainer);
 
+            
+
             editBtn.addEventListener('click', () => {
  
                 container = returnTitle(titleText);
@@ -157,22 +167,41 @@ saveBtn.addEventListener('click', () => {
                 console.log(container.getAttribute('id'));
                 
             });
+            
 
             removeBtn.addEventListener('click', () => {
  
-                removeImage(container, imageContainer);
+                removeImage(newContainer);
                 
             });
 
+            saveImageToLocalStorage(image, titleText);
         });
+}
 
-        /*
-        let newContainer = container.cloneNode(true);
+function saveImageToLocalStorage(imageData, title) {
+    const imageDataString = JSON.stringify(imageData);
+    localStorage.setItem(title, imageDataString);
+}
 
-        newContainer.setAttribute('id', titleText);
+function getImageFromLocalStorage(title) {
+    const imageDataString = localStorage.getItem(title);
+    if (imageDataString) {
+        const imageData = JSON.parse(imageDataString);
+        return imageData;
+    }
+    return null;
+}
 
-        galleryImages.push(newContainer);
-        */
+saveBtn.addEventListener('click', () => {
+
+    const saveMessage = document.querySelector('#save-message');
+    const title = document.querySelector('#title');
+    const titleText = title.value;
+
+    if (validTitle){
+
+        addGalleryImage(titleText, container);
 
         clearGrid();
 
@@ -183,15 +212,6 @@ saveBtn.addEventListener('click', () => {
         saveMessage.textContent = "Image saved"
         saveMessage.style.color = "green"
 
-        /*
-        let editBtns = document.querySelectorAll('.edit-btn');
-        let editBtn = document.getElementById(titleText);
-
-        editBtn.addEventListener('click', () => {
-            container = returnTitle(titleText);
-            console.log(container.getAttribute('id'));
-        });
-        */
 
     }
 
@@ -764,3 +784,9 @@ miscBtns.forEach((miscBtn) => {
 
 })
 
+
+function load(){
+    
+}
+
+load();
