@@ -386,6 +386,10 @@ container.addEventListener('mouseup', function() {
     isMouseDown = false;  
 });
 
+container.onmouseleave = (e) => {
+    isMouseDown = false;
+}
+
 
 function clearGrid(){
     while (container.hasChildNodes()){
