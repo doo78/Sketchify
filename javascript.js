@@ -43,6 +43,16 @@ function removeImage(newContainer){
 
     localStorage.removeItem(newContainer.getAttribute('id'));
 }
+
+function removeAllImages(){
+
+    galleryImages = [];
+    localStorage.clear();
+
+    while (gallery.firstChild) {
+        gallery.removeChild(gallery.firstChild);
+      }
+}
 function returnTitle(title){
     
     let answer;
@@ -56,6 +66,22 @@ function returnTitle(title){
     return answer;    
 }
 
+function titleIsUsed(title){
+
+    console.log("hello")
+    let used = false;
+
+    for (let i = 0; localStorage.length > i; i++){
+        console.log("localStorage.key(i): " + localStorage.key(i))
+        console.log("title: " + title);
+        if (localStorage.key(i) === title){
+            used = true;
+        }
+    }
+
+    return used;
+}
+
 const titleConfirmBtn = document.querySelector('#title-confirm-btn');
 
 titleConfirmBtn.addEventListener('click', () => {
@@ -67,11 +93,19 @@ titleConfirmBtn.addEventListener('click', () => {
     if (titleText ==="hi"){
         errorMessage.textContent = "Title is already used"
         titleConfirmBtn.style.backgroundColor = "red"
+        validTitle = false;
     }
 
     else if (titleText === ""){
         errorMessage.textContent = "Title cannot be empty"
         titleConfirmBtn.style.backgroundColor = "red"
+        validTitle = false;
+    }
+
+    else if (titleIsUsed(titleText)){
+        errorMessage.textContent = "Title is already used"
+        titleConfirmBtn.style.backgroundColor = "red"
+        validTitle = false;
     }
 
     else{
@@ -131,7 +165,9 @@ function addGalleryImage(titleText, imageDiv, isImage){
                 imageElement.classList.add('saved-image');
                 imageElement.src = image;
 
-
+                titleContainer = document.createElement('div');
+                titleContainer.classList.add('title-on-image');
+                titleContainer.textContent = titleText;
                 
                 let editBtn = document.createElement('button');
                 editBtn.classList.add("edit-btn");
@@ -146,6 +182,7 @@ function addGalleryImage(titleText, imageDiv, isImage){
                 imageBtnContainer.appendChild(editBtn);
                 imageBtnContainer.appendChild(removeBtn);
 
+                imageContainer.appendChild(titleContainer);
                 imageContainer.appendChild(imageElement);
                 imageContainer.appendChild(imageBtnContainer);
 
@@ -193,7 +230,9 @@ function addGalleryImage(titleText, imageDiv, isImage){
             imageElement.classList.add('saved-image');
             imageElement.src = imageDiv;
 
-
+            titleContainer = document.createElement('div');
+            titleContainer.classList.add('title-on-image');
+            titleContainer.textContent = titleText;
             
             let editBtn = document.createElement('button');
             editBtn.classList.add("edit-btn");
@@ -208,6 +247,7 @@ function addGalleryImage(titleText, imageDiv, isImage){
             imageBtnContainer.appendChild(editBtn);
             imageBtnContainer.appendChild(removeBtn);
 
+            imageContainer.appendChild(titleContainer);
             imageContainer.appendChild(imageElement);
             imageContainer.appendChild(imageBtnContainer);
 
@@ -278,6 +318,11 @@ saveBtn.addEventListener('click', () => {
 
         saveMessage.textContent = "Image saved"
         saveMessage.style.color = "green"
+
+        validTitle = false;
+
+        title.value = "";  
+        titleConfirmBtn.style.backgroundColor = "";
 
 
     }
@@ -846,6 +891,14 @@ miscBtns.forEach((miscBtn) => {
             downloadLink.download = 'image.png';
 
             download.click();
+        });
+    }
+
+    if (miscBtn.getAttribute("id") === "clear-gallery"){
+
+        miscBtn.addEventListener("click", () => {
+
+            removeAllImages();
         });
     }
 

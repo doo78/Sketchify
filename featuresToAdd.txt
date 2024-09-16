@@ -4,13 +4,13 @@ ToolKit{
 }
 
 General{
-    Gallery of saved images
     BGM?  
     Soundeffects
     Landscape?
     Portrait?
     Name the gallery pieces (on top of the image)
-    Title restrictions
+    Download the image in the gallery
+    clear gallery button
 }
 
 To do{
