@@ -8,9 +8,8 @@ General{
     Soundeffects
     Landscape?
     Portrait?
-    Name the gallery pieces (on top of the image)
     Download the image in the gallery
-    clear gallery button
+    Download all images in the gallery
 }
 
 To do{
@@ -18,4 +17,5 @@ To do{
     Move download button and save button to the miscBarBtn section
     isMouseDown = false when the mouse exits the container
     It switches to black draw when you click, even if you were on rainbow before
+    Image order is changing in the gallery when you reload
 }

@@ -173,7 +173,11 @@ function addGalleryImage(titleText, imageDiv, isImage){
                 editBtn.classList.add("edit-btn");
                 editBtn.setAttribute("id", titleText);
                 editBtn.textContent = "Edit";
+
                 
+                let downloadGalleryImageBtn = document.createElement('button');
+                downloadGalleryImageBtn.classList.add("download-gallery-image-btn");
+                downloadGalleryImageBtn.textContent = "Download";
 
                 let removeBtn = document.createElement('button');
                 removeBtn.classList.add("remove-btn");
@@ -181,6 +185,8 @@ function addGalleryImage(titleText, imageDiv, isImage){
 
                 imageBtnContainer.appendChild(editBtn);
                 imageBtnContainer.appendChild(removeBtn);
+                imageBtnContainer.appendChild(downloadGalleryImageBtn);
+                
 
                 imageContainer.appendChild(titleContainer);
                 imageContainer.appendChild(imageElement);
@@ -215,6 +221,15 @@ function addGalleryImage(titleText, imageDiv, isImage){
                     
                 });
 
+                downloadGalleryImageBtn.addEventListener('click', () => {
+                    const pngUrl = image
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = pngUrl;
+                    downloadLink.download = 'image.png';
+                
+                    downloadLink.click();
+                })
+
                 saveImageToLocalStorage(image, titleText);
             });
         }
@@ -239,6 +254,9 @@ function addGalleryImage(titleText, imageDiv, isImage){
             editBtn.setAttribute("id", titleText);
             editBtn.textContent = "Edit";
             
+            let downloadGalleryImageBtn = document.createElement('button');
+            downloadGalleryImageBtn.classList.add("download-gallery-image-btn");
+            downloadGalleryImageBtn.textContent = "Download";
 
             let removeBtn = document.createElement('button');
             removeBtn.classList.add("remove-btn");
@@ -246,6 +264,7 @@ function addGalleryImage(titleText, imageDiv, isImage){
 
             imageBtnContainer.appendChild(editBtn);
             imageBtnContainer.appendChild(removeBtn);
+            imageBtnContainer.appendChild(downloadGalleryImageBtn);
 
             imageContainer.appendChild(titleContainer);
             imageContainer.appendChild(imageElement);
@@ -279,6 +298,15 @@ function addGalleryImage(titleText, imageDiv, isImage){
                 removeImage(newContainer);
                 
             });
+
+            downloadGalleryImageBtn.addEventListener('click', () => {
+                const pngUrl = imageDiv
+                const downloadLink = document.createElement('a');
+                downloadLink.href = pngUrl;
+                downloadLink.download = 'image.png';
+            
+                downloadLink.click();
+            })
 
             saveImageToLocalStorage(imageDiv, titleText);
             
@@ -893,7 +921,7 @@ miscBtns.forEach((miscBtn) => {
             download.click();
         });
     }
-
+    
     if (miscBtn.getAttribute("id") === "clear-gallery"){
 
         miscBtn.addEventListener("click", () => {
@@ -903,6 +931,22 @@ miscBtns.forEach((miscBtn) => {
     }
 
 })
+
+const downloadGalleryImageBtn = document.querySelector("#download-all-images");
+
+downloadGalleryImageBtn.addEventListener("click", () => {
+
+    for (let i = 0; i < localStorage.length; i++){
+        const pngUrl = getImageFromLocalStorage(localStorage.key(i));
+        const downloadLink = document.createElement('a');
+        downloadLink.href = pngUrl;
+        downloadLink.download = localStorage.key(i) + '.png';
+    
+        downloadLink.click();
+    }
+
+
+});
 
 
 function load(){
