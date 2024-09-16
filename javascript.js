@@ -40,6 +40,8 @@ function removeImage(newContainer){
     });
 
     gallery.removeChild(imageContainer);
+
+    localStorage.removeItem(newContainer.getAttribute('id'));
 }
 function returnTitle(title){
     
@@ -112,12 +114,75 @@ downloadBtn.addEventListener('click', () => {
 const saveBtn = document.querySelector('#save-btn');
 
 
-function addGalleryImage(titleText, imageDiv){
+function addGalleryImage(titleText, imageDiv, isImage){
     let imageElement;
 
-        html2canvas(imageDiv).then(canvas => {
-            const image = canvas.toDataURL('image/png');
+        if (!isImage){
+            html2canvas(imageDiv).then(canvas => {
+                const image = canvas.toDataURL('image/png');
+                    
+                imageContainer = document.createElement('div');
+                imageContainer.classList.add('image-container');
+
+                imageBtnContainer = document.createElement('div');
+                imageBtnContainer.classList.add('image-btn-container');
+
+                imageElement = document.createElement('img');
+                imageElement.classList.add('saved-image');
+                imageElement.src = image;
+
+
                 
+                let editBtn = document.createElement('button');
+                editBtn.classList.add("edit-btn");
+                editBtn.setAttribute("id", titleText);
+                editBtn.textContent = "Edit";
+                
+
+                let removeBtn = document.createElement('button');
+                removeBtn.classList.add("remove-btn");
+                removeBtn.textContent = "Remove";
+
+                imageBtnContainer.appendChild(editBtn);
+                imageBtnContainer.appendChild(removeBtn);
+
+                imageContainer.appendChild(imageElement);
+                imageContainer.appendChild(imageBtnContainer);
+
+                imageContainer.classList.add('image-container');
+
+                imageContainer.setAttribute('id', titleText);
+
+                document.getElementById('gallery').appendChild(imageContainer);
+
+                let newContainer = container.cloneNode(true);
+
+                newContainer.setAttribute('id', titleText);
+        
+                galleryImages.push(newContainer);
+
+                
+
+                editBtn.addEventListener('click', () => {
+    
+                    container = returnTitle(titleText);
+                    console.log(container);
+                    console.log(container.getAttribute('id'));
+                    
+                });
+                
+
+                removeBtn.addEventListener('click', () => {
+    
+                    removeImage(newContainer);
+                    
+                });
+
+                saveImageToLocalStorage(image, titleText);
+            });
+        }
+
+        else{
             imageContainer = document.createElement('div');
             imageContainer.classList.add('image-container');
 
@@ -126,7 +191,7 @@ function addGalleryImage(titleText, imageDiv){
 
             imageElement = document.createElement('img');
             imageElement.classList.add('saved-image');
-            imageElement.src = image;
+            imageElement.src = imageDiv;
 
 
             
@@ -161,7 +226,7 @@ function addGalleryImage(titleText, imageDiv){
             
 
             editBtn.addEventListener('click', () => {
- 
+
                 container = returnTitle(titleText);
                 console.log(container);
                 console.log(container.getAttribute('id'));
@@ -170,13 +235,15 @@ function addGalleryImage(titleText, imageDiv){
             
 
             removeBtn.addEventListener('click', () => {
- 
+
                 removeImage(newContainer);
                 
             });
 
-            saveImageToLocalStorage(image, titleText);
-        });
+            saveImageToLocalStorage(imageDiv, titleText);
+            
+        
+        }
 }
 
 function saveImageToLocalStorage(imageData, title) {
@@ -201,7 +268,7 @@ saveBtn.addEventListener('click', () => {
 
     if (validTitle){
 
-        addGalleryImage(titleText, container);
+        addGalleryImage(titleText, container, false);
 
         clearGrid();
 
@@ -786,7 +853,29 @@ miscBtns.forEach((miscBtn) => {
 
 
 function load(){
-    
+    if (gallery.childElementCount === 0){
+        if (localStorage.length > 0){
+
+            /*
+            for (let i = 0; i < localStorage.length; i++){
+
+                const title = localStorage.key(i);
+                const image = getImageFromLocalStorage(title);
+
+                addGalleryImage(title, image, true);
+            }
+                */
+            
+            for (let i = localStorage.length - 1; i >= 0; i--) {
+                const title = localStorage.key(i);
+                const image = getImageFromLocalStorage(title);
+            
+                addGalleryImage(title, image, true);
+            }
+
+
+        }
+    }
 }
 
 load();
