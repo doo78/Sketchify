@@ -11,6 +11,15 @@
 
     <div class="sideBar">
 
+      
+      <div id="current-colour-container">
+
+        <label for="current-colour"><img src="assets/brush.png"></label>
+        <div id="current-colour"></div>
+
+      </div>
+
+
       <div class="colour-palette">
         <div class="colour"></div>
         <div class="colour"></div>
@@ -30,10 +39,12 @@
         <div class="colour"></div>
       </div>
 
+      
       <div class="hex-colour-section">
-        <label for="hexColourPicker">Pick:</label>
         <input type="color" id="hex-colour-picker" value="#000000">
-        <button id="confirm-btn">Confirm</button>
+        <button id="confirm-btn"><img src="assets/confirm.png"></button>
+      
+
       </div>
 
       <hr>
@@ -47,13 +58,13 @@
       <hr>
 
       <div id="toolbar">
-        <button class="tool-btn" id="draw">Draw</button>
-        <button class="tool-btn" id="erase">Erase</button>
-        <button class="tool-btn" id="clear">Clear</button>
-        <button class="tool-btn" id="fill">Fill</button>
-        <button class="tool-btn" id="random">Random</button>
-        <button class="tool-btn" id="rainbow">Rainbow</button>
-        <button class="tool-btn" id="rainbow-fill">Rainbow-fill</button>
+        <button class="tool-btn" id="draw"><img src="assets/draw.png"></button>
+        <button class="tool-btn" id="erase"><img src="assets/erase.png"></button>
+        <button class="tool-btn" id="clear"><img src="assets/clear.png"></button>
+        <button class="tool-btn" id="fill"><img src="assets/fill.png"></button>
+        <button class="tool-btn" id="random"><img src="assets/random.png"></button>
+        <button class="tool-btn" id="rainbow"><img src="assets/rainbow.png"></button>
+        <button class="tool-btn" id="rainbow-fill"><img src="assets/rainbowfill.png"></button>
  
 
       </div>
@@ -61,16 +72,12 @@
       <hr>
 
       <div id="misc-bar">
-        <button class="misc-btn" id="grid-lines">Grid-lines</button>
-        <button class="misc-btn brush-size" id="thin">Thin</button>
-        <button class="misc-btn brush-size" id="thick">Thick</button>
-        <button class="misc-btn" id="download-btn">Download as PNG</button>
-        <button class="misc-btn" id="save-btn">Save to gallery</button>
+        <button class="misc-btn" id="grid-lines"><img src="assets/grid-lines.png"></button>
+        <button class="misc-btn brush-size" id="thin"><img src="assets/thin.png"></button>
+        <button class="misc-btn brush-size" id="thick"><img src="assets/thick.png"></button>
+        <button class="misc-btn" id="download-btn"><img src="assets/download.png"></button>
+        <button class="misc-btn" id="save-btn"><img src="assets/save.png"></button>
         <div id="save-message"></div>
-        <button  id="check-titles">fefewf</button>
-        <button  class="misc-btn" id="clear-gallery">Clear Gallery</button>
-
-
       </div>
     </div>
 
@@ -79,9 +86,11 @@
     <div class="right-side">
 
       <div class="title-section">
+      <!--
         <div class="title">Title:</div>
-        <input type="text" id="title" maxlength="25">
-        <button id="title-confirm-btn">Confirm</button>
+      -->
+        <input type="text" id="title" maxlength="35">
+        <button id="title-confirm-btn"><img src="assets/confirm.png"></button>
       </div>
 
       <div id="error-message"></div>
@@ -92,7 +101,10 @@
 
       <h1>Gallery</h1>
 
-      <button id="download-all-images">Download all images</button>
+      <div id="gallery-btn-container">
+        <button id="download-all-images"><img src="assets/download.png"></button>
+        <button  class="misc-btn" id="clear-gallery"><img src="assets/clear.png"></button>
+      </div>
 
       <div id="gallery">
         

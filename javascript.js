@@ -12,12 +12,7 @@ let validTitle = false;
 
 const gallery = document.querySelector('#gallery');
 
-const checkTitles = document.querySelector('#check-titles')
 
-checkTitles.addEventListener('click', () => {
-
-    console.log(container.getAttribute('id'));
-});
 
 function removeImage(newContainer){
 
@@ -27,8 +22,6 @@ function removeImage(newContainer){
     galleryImages.splice(index, 1);
 
     const imageContainers = document.querySelectorAll('.image-container');
-
-    
 
     let imageContainer;
 
@@ -169,21 +162,31 @@ function addGalleryImage(titleText, imageDiv, isImage){
                 titleContainer.classList.add('title-on-image');
                 titleContainer.textContent = titleText;
                 
+                /*
                 let editBtn = document.createElement('button');
                 editBtn.classList.add("edit-btn");
                 editBtn.setAttribute("id", titleText);
                 editBtn.textContent = "Edit";
-
+                */
                 
                 let downloadGalleryImageBtn = document.createElement('button');
                 downloadGalleryImageBtn.classList.add("download-gallery-image-btn");
-                downloadGalleryImageBtn.textContent = "Download";
+                
+                const downloadGalleryImg = document.createElement('img');
+                downloadGalleryImg.setAttribute('src', "assets/download.png");
 
                 let removeBtn = document.createElement('button');
                 removeBtn.classList.add("remove-btn");
-                removeBtn.textContent = "Remove";
 
+                const removeImg = document.createElement('img');
+                removeImg.setAttribute('src', "assets/clear.png");
+
+                removeBtn.appendChild(removeImg);
+                downloadGalleryImageBtn.appendChild(downloadGalleryImg);
+
+                /*
                 imageBtnContainer.appendChild(editBtn);
+                */
                 imageBtnContainer.appendChild(removeBtn);
                 imageBtnContainer.appendChild(downloadGalleryImageBtn);
                 
@@ -205,7 +208,7 @@ function addGalleryImage(titleText, imageDiv, isImage){
                 galleryImages.push(newContainer);
 
                 
-
+                /*
                 editBtn.addEventListener('click', () => {
     
                     container = returnTitle(titleText);
@@ -213,6 +216,7 @@ function addGalleryImage(titleText, imageDiv, isImage){
                     console.log(container.getAttribute('id'));
                     
                 });
+                */
                 
 
                 removeBtn.addEventListener('click', () => {
@@ -249,20 +253,31 @@ function addGalleryImage(titleText, imageDiv, isImage){
             titleContainer.classList.add('title-on-image');
             titleContainer.textContent = titleText;
             
+            /*
             let editBtn = document.createElement('button');
             editBtn.classList.add("edit-btn");
             editBtn.setAttribute("id", titleText);
             editBtn.textContent = "Edit";
+            */
             
             let downloadGalleryImageBtn = document.createElement('button');
             downloadGalleryImageBtn.classList.add("download-gallery-image-btn");
-            downloadGalleryImageBtn.textContent = "Download";
+            
+            const downloadGalleryImg = document.createElement('img');
+            downloadGalleryImg.setAttribute('src', "assets/download.png");
 
             let removeBtn = document.createElement('button');
             removeBtn.classList.add("remove-btn");
-            removeBtn.textContent = "Remove";
 
+            const removeImg = document.createElement('img');
+            removeImg.setAttribute('src', "assets/clear.png");
+            /*
             imageBtnContainer.appendChild(editBtn);
+            */
+
+            removeBtn.appendChild(removeImg);
+            downloadGalleryImageBtn.appendChild(downloadGalleryImg);
+
             imageBtnContainer.appendChild(removeBtn);
             imageBtnContainer.appendChild(downloadGalleryImageBtn);
 
@@ -283,7 +298,7 @@ function addGalleryImage(titleText, imageDiv, isImage){
             galleryImages.push(newContainer);
 
             
-
+            /*
             editBtn.addEventListener('click', () => {
 
                 container = returnTitle(titleText);
@@ -291,6 +306,7 @@ function addGalleryImage(titleText, imageDiv, isImage){
                 console.log(container.getAttribute('id'));
                 
             });
+            */
             
 
             removeBtn.addEventListener('click', () => {
@@ -656,7 +672,7 @@ function initalizeBox(){
                     }
 
                     else if (currentTool == "erase"){
-                        box.style.backgroundColor = "white";
+                        box.style.backgroundColor = "#fae6f0";
                     }
 
                     else if (currentTool == "random"){
@@ -789,12 +805,13 @@ colourBtns.forEach((colourBtn) => {
     console.log("hi");
     colourBtn.style.backgroundColor = colours[colourBtnsArray.indexOf(colourBtn)];
 
+    
+
     colourBtn.addEventListener("click", () => {
 
         brushColour = colourBtn.style.backgroundColor;
-        /*
-        brushColour = getComputedStyle(colourBtn).backgroundColor;
-        */
+
+        currentColour.style.backgroundColor = brushColour;
     });
 });
 
@@ -802,10 +819,13 @@ colourBtns.forEach((colourBtn) => {
 
 const confirmBtn = document.querySelector("#confirm-btn");
 const hexPicker = document.querySelector("#hex-colour-picker");
+const currentColour = document.querySelector("#current-colour");
 
 confirmBtn.addEventListener("click", () => {
 
     brushColour = hexPicker.value;
+    currentColour.style.backgroundColor = hexPicker.value;
+
 });
 
 // Toolbar
@@ -857,6 +877,23 @@ toolBtns.forEach((toolBtn) => {
             else{
                 isGridLines = true;
             }
+        });
+    }
+
+    if (toolBtn.getAttribute("id") === "rainbow"){
+        
+        toolBtn.addEventListener("click", () => {
+            
+            
+            currentColour.style.background = "linear-gradient(to right, red, orange, yellow, green, blue, purple)";
+        });
+    }
+
+    if (toolBtn.getAttribute("id") === "random"){
+        
+        toolBtn.addEventListener("click", () => {
+            
+            currentColour.style.background = "linear-gradient(to right, orange, blue, green, grey, black, purple)";            
         });
     }
 

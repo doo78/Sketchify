@@ -8,14 +8,12 @@ General{
     Soundeffects
     Landscape?
     Portrait?
-    Download the image in the gallery
-    Download all images in the gallery
 }
 
 To do{
     Add comments
-    Move download button and save button to the miscBarBtn section
-    isMouseDown = false when the mouse exits the container
     It switches to black draw when you click, even if you were on rainbow before
     Image order is changing in the gallery when you reload
+    name the download links
+    when you go out of the box then come back in, even if you're holding down, it doesn't draw
 }

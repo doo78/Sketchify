@@ -1,8 +1,38 @@
+@font-face {
+    font-family: 'MyFont';
+    src: url(assets/Roboto/Roboto-Regular.ttf);
+    font-weight: normal; /* or bold, etc. */
+    font-style: normal;  /* or italic, oblique, etc. */
+  }
+
+:root{
+    --accent-color: #3B3950;
+    --primary-color: #222034;
+    
+    
+    
+    --secondary-color: #95D5B2;
+ 
+}
+
 body{
-    background-color: #A9A9A9;
+    background-color: var(--accent-color);
     display: flex;
     margin: 0;
     padding: 0;
+    color: var(--secondary-color);
+    font-family: 'MyFont';
+}
+
+button{
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    height: 50px;
+    width: 50px;
+    border: 2px solid black;
+    margin: 5px;
+    
+    
 }
 
 /*Right side*/
@@ -13,6 +43,7 @@ body{
     justify-content: center;
     margin-left: 350px;
     margin-right: auto;
+    padding: 20px;
 }
 
 .title-section{
@@ -23,11 +54,13 @@ body{
 #title{
     height: 30px;
     margin: 15px;
+    width: 500px;
+    margin-left: 35px;
+    margin-bottom: 35px;
 }
 
 #title-confirm-btn{
-    height: 30px;  
-    margin: 15px;
+    height: 50px;  
 }
 
 #error-message{
@@ -41,10 +74,17 @@ body{
 #gallery{
     display: grid;
     width: 1000px;
-    border: 1px solid black;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    margin-left: 60px;
+    margin-left: 50px;
+    padding: 20px;
+    background-color: var(--primary-color);
+
+    border: 5px solid var(--primary-color);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+    margin-top: 20px;
 }
 
 .image-container{
@@ -70,6 +110,17 @@ body{
     margin: 10px;
 }
 
+.title-on-image{
+    font-weight: bold;
+    font-size: 40px;
+    margin: 10px;
+    text-transform: uppercase;
+    background-color: var(--primary-color);
+    padding: 5px;
+    text-shadow: -2px 0 #333, 0 2px #333, 2px 0 #333, 0 -2px #333;
+
+}
+
 
 /*Title*/
 .title{
@@ -85,8 +136,8 @@ body{
 
     width: 704px;
     height: 704px;
-    border: 2px solid black;
-    background-color: white;
+    border: 2px solid var(--primary-color);
+    background-color: #fae6f0;
     
     margin-left: 200px;
     margin-right: auto;     
@@ -109,16 +160,63 @@ body{
 
 
 .sideBar{
-    border: 1px solid black;
+    
+    
     height: 100vh;
     width: 350px;
-    background-color: #A9A9A9;
+    background-color: var(--primary-color);
     display: flex;
     flex-direction: column;
     align-items: center;
     position: fixed;
-}
     
+    box-shadow: 10px 0 10px rgba(0, 0, 0, 0.6);
+    overflow-y: auto;
+
+    scrollbar-width: none;
+  
+
+}
+
+.sideBar > div{
+    margin: 10px;
+}
+
+#hex-colour-picker{
+    height: 50px;
+}
+
+#current-colour-container{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#current-colour-container > label > img{
+    height: 50px;
+    width: 50px;
+}
+
+
+#current-colour{
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    background-color: black;
+}
+
+button > img{
+    height: 40px;
+    width: 40px;
+   
+}
+
+.sizeBtn{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+
 
 #size{
     
@@ -152,8 +250,12 @@ body{
 
 hr{
     width: 250px;
-    margin: 40px;
+    margin: 25px;
 }
 
+#toolbar{
+    width: 270px;
+    
+}
 
 
