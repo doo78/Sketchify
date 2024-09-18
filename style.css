@@ -57,6 +57,8 @@ button{
     width: 500px;
     margin-left: 35px;
     margin-bottom: 35px;
+    font-weight: bold;
+    font-size: 20px;
 }
 
 #title-confirm-btn{
@@ -178,6 +180,14 @@ button{
 
 }
 
+#thirtytwoBtn{
+    background-color: #585858;
+}
+
+#draw, #thin{
+    background-color: #585858;
+}
+
 .sideBar > div{
     margin: 10px;
 }
@@ -255,7 +265,10 @@ hr{
 
 #toolbar{
     width: 270px;
-    
+}
+
+#misc-bar{
+    width: 270px;
 }
 
 

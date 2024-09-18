@@ -8,6 +8,7 @@ General{
     Soundeffects
     Landscape?
     Portrait?
+    make the brush smoother
 }
 
 To do{
@@ -16,4 +17,11 @@ To do{
     Image order is changing in the gallery when you reload
     name the download links
     when you go out of the box then come back in, even if you're holding down, it doesn't draw
+}
+
+GUI{
+    when you hover over buttons, they light up
+    when you hover over the colour palette, it responds
+    the current tool being used is highlighted
+    Error messages
 }

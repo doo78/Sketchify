@@ -9,6 +9,7 @@ let isGridLines = false;
 let brushSize = "thin";
 let galleryImages = [];
 let validTitle = false;
+let currentMisc = ["thin"];
 
 const gallery = document.querySelector('#gallery');
 
@@ -693,7 +694,7 @@ function initalizeBox(){
                     }
 
                     else if (currentTool == "erase"){
-                        colour = "white";
+                        colour = "#fae6f0";
                     }
 
                     else if (currentTool == "random"){
@@ -772,6 +773,20 @@ sizeBtns.forEach((sizeBtn) => {
 
         isGridLines = false;
 
+        sizeBtns.forEach((sizeBtn) => {
+            
+            if (sizeBtn.textContent.slice(0,2) == currentSize){
+
+                sizeBtn.style.backgroundColor = "#585858";
+            }
+
+            else{
+
+                sizeBtn.style.backgroundColor = "#222034";
+            }
+        })
+            
+
     });
 });
 
@@ -834,11 +849,42 @@ const toolBtns = document.querySelectorAll(".tool-btn");
 
 toolBtns.forEach((toolBtn) => {
 
+    /*
     toolBtn.addEventListener("click", () => {
 
         currentTool = toolBtn.getAttribute("id");
-        console.log(currentTool);
+        
+
+    });*/
+    const toolBtns = document.querySelectorAll(".tool-btn");
+
+
+    toolBtn.addEventListener("click", () => {
+        currentTool = toolBtn.getAttribute("id");
+            toolBtns.forEach((btn) => {
+                if (btn.id === currentTool) {
+                    btn.style.background = "#585858";
+                    if (btn.id === "rainbow-fill"){
+                        btn.firstChild.remove();
+                        const image = document.createElement("img");
+                        image.src = "assets/rainbowfillgrey.png";
+                        btn.appendChild(image);
+                    }
+                    else{
+                        const rainbowFillBtn = document.querySelector("#rainbow-fill"); 
+                        rainbowFillBtn.firstChild.remove();
+                        const image = document.createElement("img");
+                        image.src = "assets/rainbowfill.png";
+                        rainbowFillBtn.appendChild(image);
+                    }
+
+                } else {
+                    btn.style.background = "#222034";
+                }
+                
+            });
     });
+
 
     if (toolBtn.getAttribute("id") === "clear"){
         
@@ -901,7 +947,21 @@ toolBtns.forEach((toolBtn) => {
 
 const miscBtns = document.querySelectorAll(".misc-btn");
 
+function changeBackground(btn){
+
+    if (!(btn.style.background === "rgb(88, 88, 88)" || getComputedStyle(btn).backgroundColor === "rgb(88, 88, 88)")){
+        btn.style.background = "#585858";
+    }
+
+    else{
+        btn.style.background = "#222034";
+    }    
+
+}
+
+
 miscBtns.forEach((miscBtn) => {
+    
 
     if (miscBtn.getAttribute("id") === "grid-lines"){
         
@@ -928,23 +988,61 @@ miscBtns.forEach((miscBtn) => {
             else{
                 isGridLines = true;
             }
+
+            changeBackground(miscBtn);
         });
     }
 
     if (miscBtn.classList.contains("brush-size")){
         
-        console.log("Byee")
         miscBtn.addEventListener("click", () => {
+
+            const thinBtn = document.querySelector("#thin");
+            const thickBtn = document.querySelector("#thick");
+            
+            if (brushSize === "thin" && miscBtn === thickBtn){
+
+                const image = document.createElement("img");
+                image.src = "assets/thickgrey.png";
+
+                thickBtn.firstChild.remove();
+                thickBtn.appendChild(image);
+
+                const image2 = document.createElement("img");
+                image2.src = "assets/thin.png";
+
+                thinBtn.firstChild.remove();
+                thinBtn.appendChild(image2);
+
+                changeBackground(thinBtn);
+                changeBackground(thickBtn);                
+            }
+
+            else if (brushSize === "thick" && miscBtn === thinBtn){
+                const image = document.createElement("img");
+                image.src = "assets/thingrey.png";
+
+                thinBtn.firstChild.remove();
+                thinBtn.appendChild(image);
+
+                const image2 = document.createElement("img");
+                image2.src = "assets/thick.png";
+
+                thickBtn.firstChild.remove();
+                thickBtn.appendChild(image2);
+
+                changeBackground(thinBtn);
+                changeBackground(thickBtn);          
+
+            }
+
             brushSize =  miscBtn.getAttribute("id");
-            console.log(brushSize);
         });
     }
 
     if(miscBtn.getAttribute("id") === "download-btn"){
-        console.log("1")
         miscBtn.addEventListener("click", () => {
 
-            console.log("2")
             const canvas = document.getElementById('image-canvas');
             const ctx = canvas.getContext('2d');
             
@@ -1017,3 +1115,4 @@ function load(){
 }
 
 load();
+
