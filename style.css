@@ -31,9 +31,13 @@ button{
     width: 50px;
     border: 2px solid black;
     margin: 5px;
-    
-    
 }
+
+button:hover{
+    border-color: var(--secondary-color)
+}
+
+
 
 /*Right side*/
 .right-side{
@@ -219,6 +223,11 @@ button > img{
     height: 40px;
     width: 40px;
    
+}
+
+.colour:hover{
+    box-sizing: border-box;
+    border: 3px solid black;
 }
 
 .sizeBtn{
