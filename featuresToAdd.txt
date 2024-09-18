@@ -1,7 +1,4 @@
-ToolKit{
-    
-    Back button (likely not feasible)
-}
+
 
 General{
     BGM?  
@@ -20,8 +17,5 @@ To do{
 }
 
 GUI{
-    when you hover over buttons, they light up
-    when you hover over the colour palette, it responds
-    the current tool being used is highlighted
     Error messages
 }

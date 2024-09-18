@@ -364,6 +364,10 @@ saveBtn.addEventListener('click', () => {
         saveMessage.textContent = "Image saved"
         saveMessage.style.color = "green"
 
+        setTimeout(function() {
+            saveMessage.textContent = "";
+          }, 3000);
+
         validTitle = false;
 
         title.value = "";  
