@@ -1,5 +1,5 @@
 
-let container = document.querySelector(".container");
+// Variables to track the state of certain aspects of the program
 let isMouseDown = false;
 let currentTool = "draw";
 let brushColour = "black";
@@ -10,18 +10,51 @@ let brushSize = "thin";
 let galleryImages = [];
 let validTitle = false;
 let currentTitle = "";
-let currentMisc = ["thin"];
 let isMouseIn = false;
 
+// Elements queried from the HTML file
+const container = document.querySelector(".container");
 const gallery = document.querySelector('#gallery');
+const titleConfirmBtn = document.querySelector('#title-confirm-btn');
+const saveBtn = document.querySelector('#save-btn');
+const sizeBtns = document.querySelectorAll(".sizeBtn");
+const colourBtns = document.querySelectorAll(".colour");
+const confirmBtn = document.querySelector("#confirm-btn");
+const hexPicker = document.querySelector("#hex-colour-picker");
+const currentColour = document.querySelector("#current-colour");
+const toolBtns = document.querySelectorAll(".tool-btn");
+const miscBtns = document.querySelectorAll(".misc-btn");
+const downloadGalleryImageBtn = document.querySelector("#download-all-images");
 
 
+// Tracks the mouse activity, whether it is held down and if it's in the container
+document.onmousedown = (e) => {
+    // Prevents this from conflicting with when you click the title text box
+    if (e.target.tagName !== 'INPUT' || e.target.type !== 'text'){
+        isMouseDown = true;
+        e.preventDefault(); // Prevents an error when dragging an already coloured square
+    }
+}
 
+document.addEventListener('mouseup', function() {
+    isMouseDown = false;  
+
+});
+
+container.onmouseleave = (e) => {
+    isMouseIn = false;
+}
+
+container.onmouseenter = (e) => {
+    isMouseIn = true;
+
+}
+
+// Removes the specified image from the gallery
 function removeImage(newContainer){
 
-
+    // Removes the image from the galleryImages array
     let index = galleryImages.indexOf(newContainer);
-
     galleryImages.splice(index, 1);
 
     const imageContainers = document.querySelectorAll('.image-container');
@@ -29,7 +62,8 @@ function removeImage(newContainer){
     let imageContainer;
 
     imageContainers.forEach((image) => {
-
+        
+        // Retrieves the specific container from the gallery
         if (image.getAttribute('id') === newContainer.getAttribute('id')){
             imageContainer = image;
     }
@@ -40,6 +74,7 @@ function removeImage(newContainer){
     localStorage.removeItem(newContainer.getAttribute('id'));
 }
 
+// Clears the gallery
 function removeAllImages(){
 
     galleryImages = [];
@@ -49,6 +84,8 @@ function removeAllImages(){
         gallery.removeChild(gallery.firstChild);
       }
 }
+
+// Returns the image with the specified title
 function returnTitle(title){
     
     let answer;
@@ -62,6 +99,7 @@ function returnTitle(title){
     return answer;    
 }
 
+// Checks if the title is already in the gallery
 function titleIsUsed(title){
 
     let used = false;
@@ -76,8 +114,7 @@ function titleIsUsed(title){
     return used;
 }
 
-const titleConfirmBtn = document.querySelector('#title-confirm-btn');
-
+// Checks if the title is valid, and carries out the appropriate actions
 titleConfirmBtn.addEventListener('click', () => {
 
     const errorMessage = document.querySelector('#error-message');
@@ -114,41 +151,26 @@ titleConfirmBtn.addEventListener('click', () => {
 const downloadBtn = document.getElementById('download-btn');
 
 downloadBtn.addEventListener('click', () => {
-    /*
-    const canvas = document.createElement('canvas');
-    canvas.width = container.offsetWidth;
-    canvas.height = container.offsetHeight;
-  
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(container, 0, 0, canvas.width, canvas.height);
-  
-    const pngUrl = canvas.toDataURL('image/png');
-    const downloadLink = document.createElement('a');
-    downloadLink.href = pngUrl;
-    downloadLink.download = 'image.png';
-  
-    downloadLink.click();
-    */
 
-    // Creates a download link using the html2canvas library
-
-    
     if (validTitle){
+        // Creates a download link using the html2canvas library
         html2canvas(container).then(canvas => {
             const pngUrl = canvas.toDataURL('image/png');
             const downloadLink = document.createElement('a');
             downloadLink.href = pngUrl;
-            downloadLink.download =  currentTitle +'.png';
+            downloadLink.download =  currentTitle +'.png'; // Names the download
         
             downloadLink.click();
         });
     }
     else{
+        // Displays an error message if the title is not valid
         const saveMessage = document.querySelector('#save-message');
 
         saveMessage.textContent = "Please enter a valid title"
         saveMessage.style.color = "red"
 
+        // Waits 3 seconds before clearing the message
         setTimeout(function() {
             saveMessage.textContent = "";
           }, 3000);
@@ -156,200 +178,96 @@ downloadBtn.addEventListener('click', () => {
     }
 });
 
+// Adds the image to the gallery
+function addToGallery(titleText, image){
 
-const saveBtn = document.querySelector('#save-btn');
+    // Creates divs for the image and the buttons
+    let imageContainer = document.createElement('div');
+    imageContainer.classList.add('image-container');
 
+    let imageBtnContainer = document.createElement('div');
+    imageBtnContainer.classList.add('image-btn-container');
 
+    // Creates the image
+    let imageElement = document.createElement('img');
+    imageElement.classList.add('saved-image');
+    imageElement.src = image;
+
+    // Creates the title
+    let titleContainer = document.createElement('div');
+    titleContainer.classList.add('title-on-image');
+    titleContainer.textContent = titleText;
+    
+    // Creates the buttons for the images
+    let downloadGalleryImageBtn = document.createElement('button');
+    downloadGalleryImageBtn.classList.add("download-gallery-image-btn");
+    
+    const downloadGalleryImg = document.createElement('img');
+    downloadGalleryImg.setAttribute('src', "assets/download.png");
+
+    let removeBtn = document.createElement('button');
+    removeBtn.classList.add("remove-btn");
+
+    const removeImg = document.createElement('img');
+    removeImg.setAttribute('src', "assets/clear.png");
+
+    // Appends all the elements into their respective divs
+    removeBtn.appendChild(removeImg);
+    downloadGalleryImageBtn.appendChild(downloadGalleryImg);
+
+    imageBtnContainer.appendChild(removeBtn);
+    imageBtnContainer.appendChild(downloadGalleryImageBtn);
+    
+    imageContainer.appendChild(titleContainer);
+    imageContainer.appendChild(imageElement);
+    imageContainer.appendChild(imageBtnContainer);
+
+    imageContainer.classList.add('image-container');
+    imageContainer.setAttribute('id', titleText);
+
+    document.getElementById('gallery').appendChild(imageContainer);
+
+    // Saves the current state of the canvas to galleryImages
+    let newContainer = container.cloneNode(true);
+    newContainer.setAttribute('id', titleText);
+    galleryImages.push(newContainer);                
+
+    removeBtn.addEventListener('click', () => {
+        removeImage(newContainer);
+    });
+
+    downloadGalleryImageBtn.addEventListener('click', () => {
+        const pngUrl = image
+        const downloadLink = document.createElement('a');
+        downloadLink.href = pngUrl;
+        downloadLink.download =  titleText + '.png';
+    
+        downloadLink.click();
+    })
+
+    saveImageToLocalStorage(image, titleText);
+}
+
+// Adds the image depending if the image is provided 
+//or if the page is being reloaded
 function addGalleryImage(titleText, imageDiv, isImage){
     let imageElement;
 
-        if (!isImage){
-            html2canvas(imageDiv).then(canvas => {
-                const image = canvas.toDataURL('image/png');
-                    
-                imageContainer = document.createElement('div');
-                imageContainer.classList.add('image-container');
-
-                imageBtnContainer = document.createElement('div');
-                imageBtnContainer.classList.add('image-btn-container');
-
-                imageElement = document.createElement('img');
-                imageElement.classList.add('saved-image');
-                imageElement.src = image;
-
-                titleContainer = document.createElement('div');
-                titleContainer.classList.add('title-on-image');
-                titleContainer.textContent = titleText;
+    if (!isImage){
+        html2canvas(imageDiv).then(canvas => {
+            const image = canvas.toDataURL('image/png');
                 
-                /*
-                let editBtn = document.createElement('button');
-                editBtn.classList.add("edit-btn");
-                editBtn.setAttribute("id", titleText);
-                editBtn.textContent = "Edit";
-                */
-                
-                let downloadGalleryImageBtn = document.createElement('button');
-                downloadGalleryImageBtn.classList.add("download-gallery-image-btn");
-                
-                const downloadGalleryImg = document.createElement('img');
-                downloadGalleryImg.setAttribute('src', "assets/download.png");
+            addToGallery(titleText, image);
+        });
+    }
 
-                let removeBtn = document.createElement('button');
-                removeBtn.classList.add("remove-btn");
-
-                const removeImg = document.createElement('img');
-                removeImg.setAttribute('src', "assets/clear.png");
-
-                removeBtn.appendChild(removeImg);
-                downloadGalleryImageBtn.appendChild(downloadGalleryImg);
-
-                /*
-                imageBtnContainer.appendChild(editBtn);
-                */
-                imageBtnContainer.appendChild(removeBtn);
-                imageBtnContainer.appendChild(downloadGalleryImageBtn);
-                
-
-                imageContainer.appendChild(titleContainer);
-                imageContainer.appendChild(imageElement);
-                imageContainer.appendChild(imageBtnContainer);
-
-                imageContainer.classList.add('image-container');
-
-                imageContainer.setAttribute('id', titleText);
-
-                document.getElementById('gallery').appendChild(imageContainer);
-
-                let newContainer = container.cloneNode(true);
-
-                newContainer.setAttribute('id', titleText);
-        
-                galleryImages.push(newContainer);
-
-                
-                /*
-                editBtn.addEventListener('click', () => {
-    
-                    container = returnTitle(titleText);
-                    console.log(container);
-                    console.log(container.getAttribute('id'));
-                    
-                });
-                */
-                
-
-                removeBtn.addEventListener('click', () => {
-    
-                    removeImage(newContainer);
-                    
-                });
-
-                downloadGalleryImageBtn.addEventListener('click', () => {
-                    const pngUrl = image
-                    const downloadLink = document.createElement('a');
-                    downloadLink.href = pngUrl;
-                    downloadLink.download =  titleText + '.png';
-                
-                    downloadLink.click();
-                })
-
-                saveImageToLocalStorage(image, titleText);
-            });
-        }
-
-        else{
-            imageContainer = document.createElement('div');
-            imageContainer.classList.add('image-container');
-
-            imageBtnContainer = document.createElement('div');
-            imageBtnContainer.classList.add('image-btn-container');
-
-            imageElement = document.createElement('img');
-            imageElement.classList.add('saved-image');
-            imageElement.src = imageDiv;
-
-            titleContainer = document.createElement('div');
-            titleContainer.classList.add('title-on-image');
-            titleContainer.textContent = titleText;
-            
-            /*
-            let editBtn = document.createElement('button');
-            editBtn.classList.add("edit-btn");
-            editBtn.setAttribute("id", titleText);
-            editBtn.textContent = "Edit";
-            */
-            
-            let downloadGalleryImageBtn = document.createElement('button');
-            downloadGalleryImageBtn.classList.add("download-gallery-image-btn");
-            
-            const downloadGalleryImg = document.createElement('img');
-            downloadGalleryImg.setAttribute('src', "assets/download.png");
-
-            let removeBtn = document.createElement('button');
-            removeBtn.classList.add("remove-btn");
-
-            const removeImg = document.createElement('img');
-            removeImg.setAttribute('src', "assets/clear.png");
-            /*
-            imageBtnContainer.appendChild(editBtn);
-            */
-
-            removeBtn.appendChild(removeImg);
-            downloadGalleryImageBtn.appendChild(downloadGalleryImg);
-
-            imageBtnContainer.appendChild(removeBtn);
-            imageBtnContainer.appendChild(downloadGalleryImageBtn);
-
-            imageContainer.appendChild(titleContainer);
-            imageContainer.appendChild(imageElement);
-            imageContainer.appendChild(imageBtnContainer);
-
-            imageContainer.classList.add('image-container');
-
-            imageContainer.setAttribute('id', titleText);
-
-            document.getElementById('gallery').appendChild(imageContainer);
-
-            let newContainer = container.cloneNode(true);
-
-            newContainer.setAttribute('id', titleText);
-    
-            galleryImages.push(newContainer);
-
-            
-            /*
-            editBtn.addEventListener('click', () => {
-
-                container = returnTitle(titleText);
-                console.log(container);
-                console.log(container.getAttribute('id'));
-                
-            });
-            */
-            
-
-            removeBtn.addEventListener('click', () => {
-
-                removeImage(newContainer);
-                
-            });
-
-            downloadGalleryImageBtn.addEventListener('click', () => {
-                const pngUrl = imageDiv
-                const downloadLink = document.createElement('a');
-                downloadLink.href = pngUrl;
-                downloadLink.download = titleText + '.png';
-            
-                downloadLink.click();
-            })
-
-            saveImageToLocalStorage(imageDiv, titleText);
-            
-        
-        }
+    else{
+        addToGallery(titleText, imageDiv);
+    }
 }
 
 function saveImageToLocalStorage(imageData, title) {
+    // Convert the image data to a string so it can be stored
     const imageDataString = JSON.stringify(imageData);
     localStorage.setItem(title, imageDataString);
 }
@@ -357,6 +275,7 @@ function saveImageToLocalStorage(imageData, title) {
 function getImageFromLocalStorage(title) {
     const imageDataString = localStorage.getItem(title);
     if (imageDataString) {
+        // Convert the string back to an image
         const imageData = JSON.parse(imageDataString);
         return imageData;
     }
@@ -372,9 +291,7 @@ saveBtn.addEventListener('click', () => {
     if (validTitle){
 
         addGalleryImage(titleText, container, false);
-
         clearGrid();
-
         createGrid(currentSize);
 
         isGridLines = false;
@@ -382,12 +299,13 @@ saveBtn.addEventListener('click', () => {
         saveMessage.textContent = "Image saved"
         saveMessage.style.color = "green"
 
+        // Waits 3 seconds before clearing the message
         setTimeout(function() {
             saveMessage.textContent = "";
           }, 3000);
 
+        // Resets the title section
         validTitle = false;
-
         title.value = "";  
         titleConfirmBtn.style.backgroundColor = "";
 
@@ -402,52 +320,17 @@ saveBtn.addEventListener('click', () => {
 
   });
 
-
-// Checks if the user is holding the mouse down
-/*
-document.body.onmousedown = (e) => {
-    isMouseDown = true;
-    e.preventDefault(); // Prevents an error when dragging an already black square
-}
-
-// Checks if the user has released the mouse
-document.addEventListener('mouseup', function() {
-    isMouseDown = false;  
-});
-*/
-document.onmousedown = (e) => {
-    if (e.target.tagName !== 'INPUT' || e.target.type !== 'text'){
-        isMouseDown = true;
-        e.preventDefault(); // Prevents an error when dragging an already black square
-    }
-}
-
-// Checks if the user has released the mouse
-document.addEventListener('mouseup', function() {
-    isMouseDown = false;  
-
-});
-
-container.onmouseleave = (e) => {
-    isMouseIn = false;
-}
-
-container.onmouseenter = (e) => {
-    isMouseIn = true;
-
-}
-
-
-
-
+// Removes all the elements in the container
 function clearGrid(){
     while (container.hasChildNodes()){
         container.removeChild(container.lastChild);
     }
 }
 
+// Adds all the boxes to the container, based on the size
 function createGrid(size){
 
+    // Creates a row for as many columns there are
     function createRow(){
 
         const box = document.createElement("div");
@@ -485,11 +368,7 @@ function createGrid(size){
     initalizeBox();
 }
 
-
-
-
-createGrid(32);
-
+// Returns a rbg value
 function generateRandomColour(){
 
     let value1 = Math.random()*255;
@@ -501,8 +380,10 @@ function generateRandomColour(){
     return randomColour;
 }
 
+// Returns the next colour in the rainbow to the last one used
 function generateRainbowColour(){
 
+    // If all colours have been used, it returns to the start
     if (nextRainbowColour == 13){
         nextRainbowColour = 0;
     }
@@ -530,8 +411,12 @@ function generateRainbowColour(){
     return rainbowColour;
 }
 
+// Returns all the boxes adjacent to the one specified
 function getSurroundingBoxes(box){
+    // Converts the HTML container element into an array
     const containerArray = Array.from(container.children);
+
+    // Identifies which row and column the box is in
     let boxRow, boxIndex;
     for (let i = 0; i < containerArray.length; i++) {
       const row = containerArray[i];
@@ -543,6 +428,8 @@ function getSurroundingBoxes(box){
     }
     
     const surroundingBoxes = [];
+
+    // Checks if a row exists before this one
     if (boxRow.previousElementSibling) {
       // Get boxes from previous row
       const prevRow = boxRow.previousElementSibling;
@@ -555,6 +442,7 @@ function getSurroundingBoxes(box){
     surroundingBoxes.push(boxRow.children[boxIndex - 1]);
     surroundingBoxes.push(boxRow.children[boxIndex + 1]);
     
+    // Checks if a row exists after this one
     if (boxRow.nextElementSibling) {
       // Get boxes from next row
       const nextRow = boxRow.nextElementSibling;
@@ -566,107 +454,26 @@ function getSurroundingBoxes(box){
     return surroundingBoxes;
 }
 
-// To do: make the rainbow fill
-// To do: stop algorithm if box clicked is already filled
+// Colours all the connected boxes of the same colour to the one clicked
 function fill(box, startingColour, isRainbow){
 
-    /*
-    const containerArray = Array.from(container.children);
-
-    let surroundingBoxes;
-
-
-    console.log(containerArray[0].length);
-
-    for (let row = 0; row < containerArray.length; row++){
-        console.log("row", row);
-        for (let col = 0; col < containerArray[row].length; col++){
-            console.log("col", col);
-            if (box === containerArray[row][col]){
-                surroundingBoxes = [containerArray[row-1][col-1], containerArray[row-1][col], 
-                containerArray[row-1][col+1], containerArray[row][col-1], containerArray[row][col+1], 
-                containerArray[row+1][col-1], containerArray[row+1][col], containerArray[row+1][col+1]];
-                break;
-            }
-        }
-    }
-
-    surroundingBoxes.forEach((box) => {
-
-        if (box != undefined){
-
-            if (box.style.backgroundColor != brushColour){
-
-                box.style.backgroundColor = brushColour;
-            }
-        }
-    });
-    */
-
-    /*
-    const containerArray = Array.from(container.children);
-    let boxRow, boxIndex;
-    for (let i = 0; i < containerArray.length; i++) {
-      const row = containerArray[i];
-      if (row.contains(box)) {
-        boxRow = row;
-        boxIndex = Array.from(row.children).indexOf(box);
-        break;
-      }
-    }
-    
-    const surroundingBoxes = [];
-    if (boxRow.previousElementSibling) {
-      // Get boxes from previous row
-      const prevRow = boxRow.previousElementSibling;
-      surroundingBoxes.push(prevRow.children[boxIndex - 1]);
-      surroundingBoxes.push(prevRow.children[boxIndex]);
-      surroundingBoxes.push(prevRow.children[boxIndex + 1]);
-    }
-    
-    // Get boxes from current row
-    surroundingBoxes.push(boxRow.children[boxIndex - 1]);
-    surroundingBoxes.push(boxRow.children[boxIndex + 1]);
-    
-    if (boxRow.nextElementSibling) {
-      // Get boxes from next row
-      const nextRow = boxRow.nextElementSibling;
-      surroundingBoxes.push(nextRow.children[boxIndex - 1]);
-      surroundingBoxes.push(nextRow.children[boxIndex]);
-      surroundingBoxes.push(nextRow.children[boxIndex + 1]);
-    }
-
-    */
-
-
     const surroundingBoxes = getSurroundingBoxes(box);
-
     const validBoxes = [1, 3, 4, 6];
 
     for (let i = 0; i < surroundingBoxes.length; i++) {
 
-
+        // Does not colour boxes that are diagonal to the box clicked
         if (!validBoxes.includes(i)){
             continue;
         }
 
         let boxToFill = surroundingBoxes[i];
 
-        /*
-        if (boxToFill != undefined){
-
-            if (boxToFill.style.backgroundColor != brushColour){
-
-                boxToFill.style.backgroundColor = brushColour;
-
-                fill(boxToFill);
-            }
-        }
-            */
         if (boxToFill != undefined){
 
             if (boxToFill.style.backgroundColor == startingColour){
 
+                // Checks if it is a normal or rainbow fill
                 if (isRainbow){
                     boxToFill.style.backgroundColor = generateRainbowColour();
                 }
@@ -674,6 +481,7 @@ function fill(box, startingColour, isRainbow){
                     boxToFill.style.backgroundColor = brushColour;
                 }
 
+                // Recursively calls itself to colour all connected boxes
                 fill(boxToFill, startingColour, isRainbow);
             }
         }
@@ -682,7 +490,7 @@ function fill(box, startingColour, isRainbow){
 
 }
 
-// Adds event listeners to the boxes
+// Adds event listeners to the boxes in the canvas
 function initalizeBox(){
 
     let boxes = document.querySelectorAll(".box");
@@ -691,14 +499,12 @@ function initalizeBox(){
         box.addEventListener("mouseenter", () => {
 
             // Adds a border to the box the cursor hovers over
-           
             box.style.border = "0.5px solid black";    
-            
-            
 
-            // Changes the colour if the user is holding the mouse down
+            // Changes the colour if the mouse is held down and in the canvas
             if (isMouseDown && isMouseIn){
 
+                // Changes colour depending on the tool selected
                 if (brushSize === "thin"){
                     if (currentTool === "draw"){
                         box.style.backgroundColor = brushColour;    
@@ -717,10 +523,12 @@ function initalizeBox(){
                     }
                 }
 
+                // Applies the drawing to all the surrounding boxes as well
                 else{
                     let surroundingBoxes = getSurroundingBoxes(box);
                     let colour;
 
+                    // Checks which colour to apply
                     if (currentTool === "draw"){
                         colour = brushColour;    
                     }
@@ -737,12 +545,13 @@ function initalizeBox(){
                         colour = generateRainbowColour();
                     }
 
+                    // Applies to the clicked box
                     box.style.backgroundColor = colour;
 
+                    // Applies the determined colour to the surrounding boxes
                     surroundingBoxes.forEach((box) => {
 
                         if (box != undefined){
-
                             box.style.backgroundColor = colour;
                         }
                     })
@@ -752,7 +561,7 @@ function initalizeBox(){
 
         });
 
-        // Resets the border when the mouse leaves
+        // Resets the border when the mouse leaves, if grid lines is off
         box.addEventListener("mouseleave", () => {
             if (!isGridLines){
                 box.style.border = "none";
@@ -782,38 +591,31 @@ function initalizeBox(){
             else if (currentTool == "rainbow"){
                 box.style.backgroundColor = generateRainbowColour();
             }
-
         });
     });
 }
 
-// Buttons for changing the pixel size
-
-const sizeBtns = document.querySelectorAll(".sizeBtn");
-
+// Adds event listeners to the size buttons
 sizeBtns.forEach((sizeBtn) => {
 
     sizeBtn.addEventListener("click", () => {
 
-        clearGrid();
-
         let size = sizeBtn.textContent.slice(0,2);
-
-        createGrid(size);
-
         currentSize = size;
+
+        clearGrid();
+        createGrid(size);
 
         isGridLines = false;
 
+        // Highlights the selected size, and de-highlights the others
         sizeBtns.forEach((sizeBtn) => {
             
+            // The first two letters of sizeBtn is the size
             if (sizeBtn.textContent.slice(0,2) == currentSize){
-
                 sizeBtn.style.backgroundColor = "#585858";
             }
-
             else{
-
                 sizeBtn.style.backgroundColor = "#222034";
             }
         })
@@ -823,9 +625,6 @@ sizeBtns.forEach((sizeBtn) => {
 });
 
 // Colour palette buttons
-
-const colourBtns = document.querySelectorAll(".colour");
-
 const colourBtnsArray = Array.from(colourBtns);
 
 const colours = [
@@ -849,58 +648,45 @@ const colours = [
 
 colourBtns.forEach((colourBtn) => {
 
+    // Colours the button divs based on their position in the array
     colourBtn.style.backgroundColor = colours[colourBtnsArray.indexOf(colourBtn)];
-
-    
 
     colourBtn.addEventListener("click", () => {
 
         brushColour = colourBtn.style.backgroundColor;
-
         currentColour.style.backgroundColor = brushColour;
     });
 });
 
-// Hex Picker button
-
-const confirmBtn = document.querySelector("#confirm-btn");
-const hexPicker = document.querySelector("#hex-colour-picker");
-const currentColour = document.querySelector("#current-colour");
-
+// Confirms the selected colour in the hex picker
 confirmBtn.addEventListener("click", () => {
-
+    
     brushColour = hexPicker.value;
     currentColour.style.backgroundColor = hexPicker.value;
-
 });
 
-// Toolbar
-
-const toolBtns = document.querySelectorAll(".tool-btn");
-
+// Adds event listeners for the tool buttons
 toolBtns.forEach((toolBtn) => {
 
-    /*
-    toolBtn.addEventListener("click", () => {
-
-        currentTool = toolBtn.getAttribute("id");
-        
-
-    });*/
     const toolBtns = document.querySelectorAll(".tool-btn");
 
-
+    // Highlights the selected tool and unhighlights the others
     toolBtn.addEventListener("click", () => {
+
         currentTool = toolBtn.getAttribute("id");
+
             toolBtns.forEach((btn) => {
+                // If the button is selected, is it highlighted
                 if (btn.id === currentTool) {
                     btn.style.background = "#585858";
+                    // The rainbow-fill image isn't transparent, so I need to swap the image
                     if (btn.id === "rainbow-fill"){
                         btn.firstChild.remove();
                         const image = document.createElement("img");
                         image.src = "assets/rainbowfillgrey.png";
                         btn.appendChild(image);
                     }
+                    // Swaps the rainbow-fill image back to normal
                     else{
                         const rainbowFillBtn = document.querySelector("#rainbow-fill"); 
                         rainbowFillBtn.firstChild.remove();
@@ -910,90 +696,78 @@ toolBtns.forEach((toolBtn) => {
                     }
 
                 } else {
+                    // Unhighlights the other buttons
                     btn.style.background = "#222034";
                 }
-                
             });
     });
 
-
+    // Adds a listener to the clear button
     if (toolBtn.getAttribute("id") === "clear"){
         
         toolBtn.addEventListener("click", () => {
             
             clearGrid();
-
             createGrid(currentSize);
 
             isGridLines = false;
         });
     }
 
+    // Adds a listener to the grid lines button
     if (toolBtn.getAttribute("id") === "grid-lines"){
         
         toolBtn.addEventListener("click", () => {
             
             let box = document.querySelectorAll(".box");
             box.forEach((box) => {
-
-
+                // Removes or adds grid lines
                 if (!isGridLines){
                     box.style.border = "0.5px solid gray";
                 }
                 else{
                     box.style.border = "none";
                 }
-                
-                
             })
 
             if (isGridLines){
                 isGridLines = false;
             }
-
             else{
                 isGridLines = true;
             }
         });
     }
 
+    // Colours the current colour displayer either rainbow or random coloured
     if (toolBtn.getAttribute("id") === "rainbow"){
-        
         toolBtn.addEventListener("click", () => {
-            
-            
             currentColour.style.background = "linear-gradient(to right, red, orange, yellow, green, blue, purple)";
         });
     }
-
     if (toolBtn.getAttribute("id") === "random"){
-        
         toolBtn.addEventListener("click", () => {
-            
             currentColour.style.background = "linear-gradient(to right, orange, blue, green, grey, black, purple)";            
         });
     }
 
 })
 
-const miscBtns = document.querySelectorAll(".misc-btn");
-
+// Flips the background from highlighted to unhighlighted and vice versa
 function changeBackground(btn){
 
     if (!(btn.style.background === "rgb(88, 88, 88)" || getComputedStyle(btn).backgroundColor === "rgb(88, 88, 88)")){
         btn.style.background = "#585858";
     }
-
     else{
         btn.style.background = "#222034";
     }    
 
 }
 
-
+// Adds event listeners for the miscellaneous buttons
 miscBtns.forEach((miscBtn) => {
     
-
     if (miscBtn.getAttribute("id") === "grid-lines"){
         
         miscBtn.addEventListener("click", () => {
@@ -1001,15 +775,12 @@ miscBtns.forEach((miscBtn) => {
             let box = document.querySelectorAll(".box");
             box.forEach((box) => {
 
-
                 if (!isGridLines){
                     box.style.border = "0.5px solid gray";
                 }
                 else{
                     box.style.border = "none";
-                }
-                
-                
+                }                
             })
 
             if (isGridLines){
@@ -1026,13 +797,15 @@ miscBtns.forEach((miscBtn) => {
 
     if (miscBtn.classList.contains("brush-size")){
         
+        // Changes the brush sizes and highlights the selected one and unhighlights the other
+        // Like rainbow-fill, the image isn't transparent, so I need to swap the image
         miscBtn.addEventListener("click", () => {
 
             const thinBtn = document.querySelector("#thin");
             const thickBtn = document.querySelector("#thick");
             
+            // For when the brush is currently thin and you click thick
             if (brushSize === "thin" && miscBtn === thickBtn){
-
                 const image = document.createElement("img");
                 image.src = "assets/thickgrey.png";
 
@@ -1049,6 +822,7 @@ miscBtns.forEach((miscBtn) => {
                 changeBackground(thickBtn);                
             }
 
+            // For when the brush is currently thick and you click thin
             else if (brushSize === "thick" && miscBtn === thinBtn){
                 const image = document.createElement("img");
                 image.src = "assets/thingrey.png";
@@ -1064,107 +838,51 @@ miscBtns.forEach((miscBtn) => {
 
                 changeBackground(thinBtn);
                 changeBackground(thickBtn);          
-
             }
 
             brushSize =  miscBtn.getAttribute("id");
         });
     }
-    /*
-    if(miscBtn.getAttribute("id") === "download-btn"){
-        miscBtn.addEventListener("click", () => {
-
-            console.log(validTitle);
-
-            if (validTitle === true){
-
-                download();
-
-                /*
-                console.log("here" + validTitle);
-                const canvas = document.getElementById('image-canvas');
-                const ctx = canvas.getContext('2d');
-                
-                // Draw the image on the canvas
-                ctx.drawImage(container, 0, 0);
-                
-                // Generate a PNG image URL
-                const pngUrl = canvas.toDataURL('image/png');
-                
-                // Create a download link
-                const downloadLink = document.createElement('a');
-                downloadLink.href = pngUrl;
-                downloadLink.download = 'image.png';
-
-                download.click();
-                */
-               /*
-            }
-
-            else{
-                const saveMessage = document.querySelector('#save-message');
-
-                saveMessage.textContent = "Please enter a valid title"
-                saveMessage.style.color = "red"
-
-                setTimeout(function() {
-                    saveMessage.textContent = "";
-                  }, 3000);
-
-            }
-        });
-    }
-    */
     
+    // Adds an event listener to the clear gallery button
     if (miscBtn.getAttribute("id") === "clear-gallery"){
 
         miscBtn.addEventListener("click", () => {
-
             removeAllImages();
         });
     }
 
 })
 
-const downloadGalleryImageBtn = document.querySelector("#download-all-images");
-
 downloadGalleryImageBtn.addEventListener("click", () => {
 
+    // Downloads all the images in the gallery
     for (let i = 0; i < localStorage.length; i++){
         const pngUrl = getImageFromLocalStorage(localStorage.key(i));
         const downloadLink = document.createElement('a');
         downloadLink.href = pngUrl;
+        
+        // Names the download based on it's title in local storage
         downloadLink.download = localStorage.key(i) + '.png';
     
         downloadLink.click();
     }
-
-
 });
 
 
 function load(){
+    // Creates the grid with the default size of 32x32
+    createGrid(32);
+
+    // Adds the images from local storage to the gallery
     if (gallery.childElementCount === 0){
         if (localStorage.length > 0){
-
-            /*
-            for (let i = 0; i < localStorage.length; i++){
-
-                const title = localStorage.key(i);
-                const image = getImageFromLocalStorage(title);
-
-                addGalleryImage(title, image, true);
-            }
-                */
-            
             for (let i = localStorage.length - 1; i >= 0; i--) {
                 const title = localStorage.key(i);
                 const image = getImageFromLocalStorage(title);
             
                 addGalleryImage(title, image, true);
             }
-
-
         }
     }
 }
