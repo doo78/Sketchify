@@ -3,23 +3,21 @@
 <html dir="ltr" lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Etch-a-sketch</title>
+    <title>Sketchify</title>
     <link rel = "stylesheet" href = "style.css">
+    <link rel="icon" type="image/x-icon" href="assets/draw.png">
   </head>
 
   <body>
 
+    <!-- The sidebar containing the colour palette, toolbar and miscellaneous buttons-->
     <div class="sideBar">
-
-      
       <div id="current-colour-container">
-
         <label for="current-colour"><img src="assets/brush.png"></label>
         <div id="current-colour"></div>
-
       </div>
 
-
+      <!-- The colour palette -->
       <div class="colour-palette">
         <div class="colour"></div>
         <div class="colour"></div>
@@ -39,16 +37,15 @@
         <div class="colour"></div>
       </div>
 
-      
+      <!-- Section to pick a custom colour -->
       <div class="hex-colour-section">
         <input type="color" id="hex-colour-picker" value="#000000">
         <button id="confirm-btn"><img src="assets/confirm.png"></button>
-      
-
       </div>
 
       <hr>
 
+      <!-- Buttons to change the size of the grid-->
       <div id="sizeBtns">
         <button class="sizeBtn">16x</button>
         <button class="sizeBtn" id="thirtytwoBtn">32x</button>
@@ -57,6 +54,7 @@
 
       <hr>
 
+      <!-- Tools for the drawing-->
       <div id="toolbar">
         <button class="tool-btn" id="draw"><img src="assets/draw.png"></button>
         <button class="tool-btn" id="erase"><img src="assets/erase.png"></button>
@@ -65,12 +63,11 @@
         <button class="tool-btn" id="random"><img src="assets/random.png"></button>
         <button class="tool-btn" id="rainbow"><img src="assets/rainbow.png"></button>
         <button class="tool-btn" id="rainbow-fill"><img id="rainbow-fill-image" src="assets/rainbowfill.png"></button>
- 
-
       </div>
 
       <hr>
 
+      <!-- Miscellaneous buttons -->
       <div id="misc-bar">
         <button class="misc-btn" id="grid-lines"><img src="assets/grid-lines.png"></button>
         <button class="misc-btn brush-size" id="thin"><img id="thin-image" src="assets/thingrey.png"></button>
@@ -81,42 +78,45 @@
       </div>
     </div>
 
-    
 
+    <!-- Contains the canvas and the gallery -->
     <div class="right-side">
 
+      <!-- Where the user enters the title -->
       <div class="title-section">
-      <!--
-        <div class="title">Title:</div>
-      -->
         <input type="text" id="title" maxlength="35">
         <button id="title-confirm-btn"><img src="assets/confirm.png"></button>
       </div>
 
+      <!-- Displays error messages for the title -->
       <div id="error-message"></div>
 
+      <!-- The canvas-->
       <div class = "container">
-      
+        <!-- The contents are generated in the script -->
       </div>
 
+
+      <!-- The gallery -->
       <h1>Gallery</h1>
 
+      <!-- Gallery buttons -->
       <div id="gallery-btn-container">
         <button id="download-all-images"><img src="assets/download.png"></button>
         <button  class="misc-btn" id="clear-gallery"><img src="assets/clear.png"></button>
       </div>
 
+      <!-- Gallery images -->
       <div id="gallery">
-        
-
+        <!-- Like the canvas, the contents are generated in the script-->
       </div>
     </div>
 
 
   </body>
 
+  <!-- The javascript file and the library used to convert the canvas into a png -->
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <script src = "javascript.js"></script>
-  <!--<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>-->
 
 </html>

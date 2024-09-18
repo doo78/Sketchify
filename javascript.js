@@ -64,12 +64,10 @@ function returnTitle(title){
 
 function titleIsUsed(title){
 
-    console.log("hello")
     let used = false;
 
     for (let i = 0; localStorage.length > i; i++){
-        console.log("localStorage.key(i): " + localStorage.key(i))
-        console.log("title: " + title);
+
         if (localStorage.key(i) === title){
             used = true;
         }
@@ -134,7 +132,6 @@ downloadBtn.addEventListener('click', () => {
 
     // Creates a download link using the html2canvas library
 
-    console.log("billy")
     
     if (validTitle){
         html2canvas(container).then(canvas => {
@@ -248,7 +245,6 @@ function addGalleryImage(titleText, imageDiv, isImage){
                 });
 
                 downloadGalleryImageBtn.addEventListener('click', () => {
-                    console.log("ergrefi");
                     const pngUrl = image
                     const downloadLink = document.createElement('a');
                     downloadLink.href = pngUrl;
@@ -420,27 +416,24 @@ document.addEventListener('mouseup', function() {
 });
 */
 document.onmousedown = (e) => {
-    isMouseDown = true;
-    e.preventDefault(); // Prevents an error when dragging an already black square
-    console.log("isMouseDown", isMouseDown);
-
+    if (e.target.tagName !== 'INPUT' || e.target.type !== 'text'){
+        isMouseDown = true;
+        e.preventDefault(); // Prevents an error when dragging an already black square
+    }
 }
 
 // Checks if the user has released the mouse
 document.addEventListener('mouseup', function() {
     isMouseDown = false;  
-    console.log("isMouseDown", isMouseDown);
 
 });
 
 container.onmouseleave = (e) => {
     isMouseIn = false;
-    console.log("isMouseIn", isMouseIn);
 }
 
 container.onmouseenter = (e) => {
     isMouseIn = true;
-    console.log("isMouseIn", isMouseIn);
 
 }
 
@@ -856,7 +849,6 @@ const colours = [
 
 colourBtns.forEach((colourBtn) => {
 
-    console.log("hi");
     colourBtn.style.backgroundColor = colours[colourBtnsArray.indexOf(colourBtn)];
 
     

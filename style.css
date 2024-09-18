@@ -5,14 +5,11 @@
     font-style: normal;  /* or italic, oblique, etc. */
   }
 
+  /* Variables */
 :root{
     --accent-color: #3B3950;
     --primary-color: #222034;
-    
-    
-    
     --secondary-color: #95D5B2;
- 
 }
 
 body{
@@ -37,9 +34,8 @@ button:hover{
     border-color: var(--secondary-color)
 }
 
+/* Right side */
 
-
-/*Right side*/
 .right-side{
     display: flex;
     flex-direction: column;
@@ -50,9 +46,10 @@ button:hover{
     padding: 20px;
 }
 
+/* Title section */
+
 .title-section{
     display: flex;
-
 }
 
 #title{
@@ -67,6 +64,11 @@ button:hover{
 
 #title-confirm-btn{
     height: 50px;  
+}
+
+.title{
+    text-align: center;
+    font-size: 50px;   
 }
 
 #error-message{
@@ -110,7 +112,6 @@ button:hover{
 
 .edit-btn{
     height: 20px;
-  
 }
 
 .saved-image{
@@ -127,18 +128,10 @@ button:hover{
     background-color: var(--primary-color);
     padding: 5px;
     text-shadow: -2px 0 #333, 0 2px #333, 2px 0 #333, 0 -2px #333;
-
 }
 
+/* The canvas */
 
-/*Title*/
-.title{
-    text-align: center;
-    font-size: 50px;
-    
-}
-
-/*Inside the canvas*/
 .container{
     display: flex;
     flex-direction: column;
@@ -155,22 +148,17 @@ button:hover{
 
 #boxRow{
     display: flex;
-    
 }
 
 .box{
     box-sizing: border-box;
     height: 22px;
     width: 22px;
-    
 }
 
 /*Side Bar*/
 
-
 .sideBar{
-    
-    
     height: 100vh;
     width: 350px;
     background-color: var(--primary-color);
@@ -183,8 +171,6 @@ button:hover{
     overflow-y: auto;
 
     scrollbar-width: none;
-  
-
 }
 
 #thirtytwoBtn{
@@ -214,7 +200,6 @@ button:hover{
     width: 50px;
 }
 
-
 #current-colour{
     border-radius: 50%;
     height: 50px;
@@ -238,8 +223,6 @@ button > img{
     font-size: 20px;
 }
 
-
-
 #size{
     
     margin-left: 540px;
@@ -248,6 +231,7 @@ button > img{
     margin-top: 50px;
 }
 
+/* Colour palette */
 
 .colour-palette{
     display: grid;
@@ -278,6 +262,8 @@ hr{
 #toolbar{
     width: 270px;
 }
+
+/* Miscellaneous area */
 
 #misc-bar{
     width: 270px;
