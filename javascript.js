@@ -9,7 +9,9 @@ let isGridLines = false;
 let brushSize = "thin";
 let galleryImages = [];
 let validTitle = false;
+let currentTitle = "";
 let currentMisc = ["thin"];
+let isMouseIn = false;
 
 const gallery = document.querySelector('#gallery');
 
@@ -106,8 +108,10 @@ titleConfirmBtn.addEventListener('click', () => {
         errorMessage.textContent = ""
         titleConfirmBtn.style.backgroundColor = "green"
         validTitle = true;
+        currentTitle = titleText;
     }
 });
+
 
 const downloadBtn = document.getElementById('download-btn');
 
@@ -129,15 +133,32 @@ downloadBtn.addEventListener('click', () => {
     */
 
     // Creates a download link using the html2canvas library
-    html2canvas(container).then(canvas => {
-        const pngUrl = canvas.toDataURL('image/png');
-        const downloadLink = document.createElement('a');
-        downloadLink.href = pngUrl;
-        downloadLink.download = 'image.png';
+
+    console.log("billy")
     
-        downloadLink.click();
-      });
+    if (validTitle){
+        html2canvas(container).then(canvas => {
+            const pngUrl = canvas.toDataURL('image/png');
+            const downloadLink = document.createElement('a');
+            downloadLink.href = pngUrl;
+            downloadLink.download =  currentTitle +'.png';
+        
+            downloadLink.click();
+        });
+    }
+    else{
+        const saveMessage = document.querySelector('#save-message');
+
+        saveMessage.textContent = "Please enter a valid title"
+        saveMessage.style.color = "red"
+
+        setTimeout(function() {
+            saveMessage.textContent = "";
+          }, 3000);
+
+    }
 });
+
 
 const saveBtn = document.querySelector('#save-btn');
 
@@ -227,10 +248,11 @@ function addGalleryImage(titleText, imageDiv, isImage){
                 });
 
                 downloadGalleryImageBtn.addEventListener('click', () => {
+                    console.log("ergrefi");
                     const pngUrl = image
                     const downloadLink = document.createElement('a');
                     downloadLink.href = pngUrl;
-                    downloadLink.download = 'image.png';
+                    downloadLink.download =  titleText + '.png';
                 
                     downloadLink.click();
                 })
@@ -320,7 +342,7 @@ function addGalleryImage(titleText, imageDiv, isImage){
                 const pngUrl = imageDiv
                 const downloadLink = document.createElement('a');
                 downloadLink.href = pngUrl;
-                downloadLink.download = 'image.png';
+                downloadLink.download = titleText + '.png';
             
                 downloadLink.click();
             })
@@ -397,19 +419,32 @@ document.addEventListener('mouseup', function() {
     isMouseDown = false;  
 });
 */
-container.onmousedown = (e) => {
+document.onmousedown = (e) => {
     isMouseDown = true;
     e.preventDefault(); // Prevents an error when dragging an already black square
+    console.log("isMouseDown", isMouseDown);
+
 }
 
 // Checks if the user has released the mouse
-container.addEventListener('mouseup', function() {
+document.addEventListener('mouseup', function() {
     isMouseDown = false;  
+    console.log("isMouseDown", isMouseDown);
+
 });
 
 container.onmouseleave = (e) => {
-    isMouseDown = false;
+    isMouseIn = false;
+    console.log("isMouseIn", isMouseIn);
 }
+
+container.onmouseenter = (e) => {
+    isMouseIn = true;
+    console.log("isMouseIn", isMouseIn);
+
+}
+
+
 
 
 function clearGrid(){
@@ -669,7 +704,7 @@ function initalizeBox(){
             
 
             // Changes the colour if the user is holding the mouse down
-            if (isMouseDown){
+            if (isMouseDown && isMouseIn){
 
                 if (brushSize === "thin"){
                     if (currentTool === "draw"){
@@ -747,11 +782,11 @@ function initalizeBox(){
                 box.style.backgroundColor = generateRainbowColour();
             }
 
-            else if (currentTool = "draw"){
+            else if (currentTool == "draw"){
                 box.style.backgroundColor = brushColour;
             }
 
-            else if (currentTool = "rainbow"){
+            else if (currentTool == "rainbow"){
                 box.style.backgroundColor = generateRainbowColour();
             }
 
@@ -1043,27 +1078,51 @@ miscBtns.forEach((miscBtn) => {
             brushSize =  miscBtn.getAttribute("id");
         });
     }
-
+    /*
     if(miscBtn.getAttribute("id") === "download-btn"){
         miscBtn.addEventListener("click", () => {
 
-            const canvas = document.getElementById('image-canvas');
-            const ctx = canvas.getContext('2d');
-            
-            // Draw the image on the canvas
-            ctx.drawImage(container, 0, 0);
-            
-            // Generate a PNG image URL
-            const pngUrl = canvas.toDataURL('image/png');
-            
-            // Create a download link
-            const downloadLink = document.createElement('a');
-            downloadLink.href = pngUrl;
-            downloadLink.download = 'image.png';
+            console.log(validTitle);
 
-            download.click();
+            if (validTitle === true){
+
+                download();
+
+                /*
+                console.log("here" + validTitle);
+                const canvas = document.getElementById('image-canvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Draw the image on the canvas
+                ctx.drawImage(container, 0, 0);
+                
+                // Generate a PNG image URL
+                const pngUrl = canvas.toDataURL('image/png');
+                
+                // Create a download link
+                const downloadLink = document.createElement('a');
+                downloadLink.href = pngUrl;
+                downloadLink.download = 'image.png';
+
+                download.click();
+                */
+               /*
+            }
+
+            else{
+                const saveMessage = document.querySelector('#save-message');
+
+                saveMessage.textContent = "Please enter a valid title"
+                saveMessage.style.color = "red"
+
+                setTimeout(function() {
+                    saveMessage.textContent = "";
+                  }, 3000);
+
+            }
         });
     }
+    */
     
     if (miscBtn.getAttribute("id") === "clear-gallery"){
 
