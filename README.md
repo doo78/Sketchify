@@ -1,6 +1,3 @@
-# ```CHANGE ZOOM LEVEL TO 80%```
-(sorry, I developed the whole thing in 80% without realising)
-
 # Sketchify
 
 A simple and intuitive web application for drawing. 
@@ -17,5 +14,4 @@ A simple and intuitive web application for drawing.
 ## How to use 
 
 * Open up the link and start drawing! It's that easy!
-* (just make sure to change the zoom level to 80%)
 * doo78.github.io/Sketchify/
