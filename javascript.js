@@ -1,4 +1,5 @@
 
+
 // Variables to track the state of certain aspects of the program
 let isMouseDown = false;
 let currentTool = "draw";

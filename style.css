@@ -5,7 +5,7 @@
     font-style: normal;  /* or italic, oblique, etc. */
   }
 
-  /* Variables */
+/* Variables */
 :root{
     --accent-color: #3B3950;
     --primary-color: #222034;
@@ -24,10 +24,10 @@ body{
 button{
     background-color: var(--primary-color);
     color: var(--secondary-color);
-    height: 50px;
-    width: 50px;
+    height: 40px;
+    width: 40px;
     border: 2px solid black;
-    margin: 5px;
+    margin: 4px;
 }
 
 button:hover{
@@ -41,9 +41,9 @@ button:hover{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-left: 350px;
+    margin-left: 280px;
     margin-right: auto;
-    padding: 20px;
+    padding: 16px;
 }
 
 /* Title section */
@@ -53,49 +53,49 @@ button:hover{
 }
 
 #title{
-    height: 30px;
-    margin: 15px;
-    width: 500px;
-    margin-left: 35px;
-    margin-bottom: 15px;
+    height: 24px;
+    margin: 12px;
+    width: 400px;
+    margin-left: 28px;
+    margin-bottom: 12px;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 #title-confirm-btn{
-    height: 50px;  
+    height: 40px;  
 }
 
 .title{
     text-align: center;
-    font-size: 50px;   
+    font-size: 40px;   
 }
 
 #error-message{
     color: red;
-    font-size: 30px;
+    font-size: 24px;
     font-weight: bold;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 }
 
 /*Gallery*/
 
 #gallery{
     display: grid;
-    width: 1000px;
+    width: 800px;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    margin-left: 50px;
-    padding: 20px;
+    margin-left: 40px;
+    padding: 16px;
     background-color: var(--primary-color);
 
-    border: 5px solid var(--primary-color);
+    border: 4px solid var(--primary-color);
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
 
-    grid-row-gap: 30px;
+    grid-row-gap: 24px;
 
-    margin-top: 20px;
+    margin-top: 16px;
 }
 
 .image-container{
@@ -107,26 +107,26 @@ button:hover{
 
 .image-btn-container{
     display: flex;
-    gap: 10px;
+    gap: 8px;
 }
 
 .edit-btn{
-    height: 20px;
+    height: 16px;
 }
 
 .saved-image{
-    width: 300px;
-    height: 300px;
-    margin: 10px;
+    width: 240px;
+    height: 240px;
+    margin: 8px;
 }
 
 .title-on-image{
     font-weight: bold;
-    font-size: 40px;
-    margin: 10px;
+    font-size: 32px;
+    margin: 8px;
     text-transform: uppercase;
     background-color: var(--primary-color);
-    padding: 5px;
+    padding: 4px;
     text-shadow: -2px 0 #333, 0 2px #333, 2px 0 #333, 0 -2px #333;
 }
 
@@ -136,12 +136,12 @@ button:hover{
     display: flex;
     flex-direction: column;
 
-    width: 704px;
-    height: 704px;
+    width: 576px;
+    height: 576px;
     border: 2px solid var(--primary-color);
     background-color: #fae6f0;
     
-    margin-left: 200px;
+    margin-left: 160px;
     margin-right: auto;     
     
 }
@@ -152,22 +152,22 @@ button:hover{
 
 .box{
     box-sizing: border-box;
-    height: 22px;
-    width: 22px;
+    height: 18px;
+    width: 18px;
 }
 
 /*Side Bar*/
 
 .sideBar{
     height: 100vh;
-    width: 350px;
+    width: 280px;
     background-color: var(--primary-color);
     display: flex;
     flex-direction: column;
     align-items: center;
     position: fixed;
     
-    box-shadow: 10px 0 10px rgba(0, 0, 0, 0.6);
+    box-shadow: 8px 0 10px rgba(0, 0, 0, 0.6);
     overflow-y: auto;
 
     scrollbar-width: none;
@@ -182,11 +182,11 @@ button:hover{
 }
 
 .sideBar > div{
-    margin: 10px;
+    margin: 8px;
 }
 
 #hex-colour-picker{
-    height: 50px;
+    height: 40px;
 }
 
 #current-colour-container{
@@ -196,39 +196,39 @@ button:hover{
 }
 
 #current-colour-container > label > img{
-    height: 50px;
-    width: 50px;
+    height: 40px;
+    width: 40px;
 }
 
 #current-colour{
-    border-radius: 50%;
-    height: 50px;
-    width: 50px;
+    border-radius: 40%;
+    height: 40px;
+    width: 40px;
     background-color: black;
 }
 
 button > img{
-    height: 40px;
-    width: 40px;
+    height: 26px;
+    width: 26px;
    
 }
 
 .colour:hover{
     box-sizing: border-box;
-    border: 3px solid black;
+    border: 2px solid black;
 }
 
 .sizeBtn{
     font-weight: bold;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 #size{
     
-    margin-left: 540px;
+    margin-left: 432px;
     margin-right: auto;
-    margin-bottom: 50px;
-    margin-top: 50px;
+    margin-bottom: 40px;
+    margin-top: 40px;
 }
 
 /* Colour palette */
@@ -238,42 +238,42 @@ button > img{
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(4, 1fr);
     border: 1px solid black;
-    width: 200px;
+    width: 160px;
     gap: 0;
-    margin: 10px;
+    margin: 8px;
 }
 
 .colour{
-    height: 50px;
-    width: 50px;
+    height: 40px;
+    width: 40px;
     background-color: red;
     
 }
 
 .hex-colour-section{
-    margin: 10px;
+    margin: 80px;
 }
 
 hr{
-    width: 250px;
-    margin: 25px;
+    width: 200px;
+    margin: 20px;
 }
 
 #toolbar{
-    width: 270px;
+    width: 216px;
 }
 
 /* Miscellaneous area */
 
 #misc-bar{
-    width: 270px;
+    width: 216px;
 }
 
 #save-message{
     font-weight: bold;
-    font-size: 20px;
-    margin-top: 10px;
-    margin-left: 5px;
+    font-size: 16px;
+    margin-top: 8px;
+    margin-left: 4px;
 }
 
 
